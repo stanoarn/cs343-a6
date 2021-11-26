@@ -1,4 +1,13 @@
+#include "printer.h"
+#include "nameserver.h"
+#include "watcard.h"
+
+extern MPRNG mprng;
+
 _Task VendingMachine {
+  Printer & printer;
+  NameServer & nameServer;
+  unsigned int id, sodaCost, stock[4] = {0,0,0,0};
 	void main();
   enum States : char {
     Start = 'S',
@@ -9,7 +18,7 @@ _Task VendingMachine {
     Finished = 'F'
   };
   public:
-	enum Flavours { ... }; 				// flavours of soda (YOU DEFINE)
+	enum Flavours { Cherry = 0, Soda = 1, Root = 2, Lime = 3 }; 				// flavours of soda (YOU DEFINE)
 	_Event Free {};						// free, advertisement
 	_Event Funds {};					// insufficient funds
 	_Event Stock {};					// flavour out of stock
