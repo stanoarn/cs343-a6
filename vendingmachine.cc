@@ -8,7 +8,23 @@ void VendingMachine::main(){
       _Accept (inventory){
         _Accept (restocked);
       }//accept inventory
-      or _Accept (buy);
+      or _Accept (buy){
+        if (stock[flavour] == 0){
+          status = Stock;
+        }
+        else if (card.getBalance() < sodaCost){
+          status = Funds;
+        }
+        stock[flavour] = stock[flavour] - 1;
+        else if (mprng(5 - 1) == 0){
+          status = Free;
+        }
+        else {
+          card.withdraw(sodaCost);
+          status = Succ;
+        }
+        bench.signalBlock();
+      }//accept buy
     }
     catch( uMutexFailure::RendezvousFailure & ) {
       //we threw an exception at a student
@@ -17,17 +33,18 @@ void VendingMachine::main(){
 };
 
 void buy( Flavours flavour, WATCard & card ){
-  if (stock[flavour] == 0){
-    _Throw Stock();
-  }
-  if (card.getBalance() < sodaCost){
-    _Throw Funds();
-  }
-  stock[flavour] = stock[flavour] - 1;
-  if (mprng(5 - 1) == 0){
-    _Throw Free();
-  }
-  card.withdraw(sodaCost);
+  bench.wait();
+  switch (status){
+    case Stock:
+      _Throw Stock();
+      break;
+    case Funds:
+      _Throw Funds();
+      break;
+    case Free:
+      _Throw Free();
+      break;
+  }//switch
 };
 
 unsigned int * inventory(){
