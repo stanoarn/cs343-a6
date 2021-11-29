@@ -31,6 +31,13 @@ int getPosition(Kind kind, unsigned int lid){
             return 6 + numStudents + numVendingMachines + lid;
     }
 }
+void Printer::update(unsigned int location, Info newString){
+    if (!buffer[location].filled){
+        buffer[location] = newString;
+    } else {
+        flush(location, newString);
+    }
+}
 
 void Printer::flush(unsigned int location, Info newString){
     for(unsigned int i = 0; i < voters; i++){
@@ -127,11 +134,7 @@ void Printer::print( Kind kind, char state ){
     newString.state = state;
     newString.numValues = 0;
 
-    if (!buffer[getPosition(kind)].filled){
-        buffer[getPosition(kind)] = newString;
-    } else {
-        flush(getPosition(kind), newString);
-    }
+    update(getPosition(kind), newString);
 }
 
 void Printer::print( Kind kind, char state, unsigned int value1 ){
@@ -141,11 +144,7 @@ void Printer::print( Kind kind, char state, unsigned int value1 ){
     newString.value1 = value1;
     newString.numValues = 1;
 
-    if (!buffer[getPosition(kind)].filled){
-        buffer[getPosition(kind)] = newString;
-    } else {
-        flush(getPosition(kind), newString);
-    }
+    update(getPosition(kind), newString);
 }
 
 void Printer::print( Kind kind, char state, unsigned int value1, unsigned int value2 ){
@@ -156,11 +155,7 @@ void Printer::print( Kind kind, char state, unsigned int value1, unsigned int va
     newString.value2 = value2;
     newString.numValues = 2;
 
-    if (!buffer[getPosition(kind)].filled){
-        buffer[getPosition(kind)] = newString;
-    } else {
-        flush(getPosition(kind), newString);
-    }
+    update(getPosition(kind), newString);
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state ){
@@ -169,11 +164,7 @@ void Printer::print( Kind kind, unsigned int lid, char state ){
     newString.state = state;
     newString.numValues = 0;
 
-    if (!buffer[getPosition(kind, lid)].filled){
-        buffer[getPosition(kind, lid)] = newString;
-    } else {
-        flush(getPosition(kind, lid), newString);
-    }
+    update(getPosition(kind, lid), newString);
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value1 ){
@@ -183,11 +174,7 @@ void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value
     newString.value1 = value1;
     newString.numValues = 1;
 
-    if (!buffer[getPosition(kind, lid)].filled){
-        buffer[getPosition(kind, lid)] = newString;
-    } else {
-        flush(getPosition(kind, lid), newString);
-    }
+    update(getPosition(kind, lid), newString);
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value1, unsigned int value2 ){
@@ -198,9 +185,5 @@ void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value
     newString.value2 = value2;
     newString.numValues = 2;
 
-    if (!buffer[getPosition(kind, lid)].filled){
-        buffer[getPosition(kind, lid)] = newString;
-    } else {
-        flush(getPosition(kind, lid), newString);
-    }
+    update(getPosition(kind, lid), newString);
 }

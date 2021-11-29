@@ -16,6 +16,7 @@ _Monitor Printer {
 	int getPosition(Kind kind);
 	int getPosition(Kind kind, unsigned int lid);
 
+	void update(unsigned int location, Info newString);
 	void flush(unsigned int location, Info newString);
   public:
 	enum Kind { Parent, Groupoff, WATCardOffice, NameServer, Truck, BottlingPlant, Student, Vending, Courier };
