@@ -9,13 +9,10 @@ _Monitor Printer {
 		unsigned int value1;
 		unsigned int value2;
 		unsigned int numValues;
-	}
+	};
 	Info* buffer;
 
-	// get column in buffer information should be depending on its kind
-	int getPosition(Kind kind);
-	int getPosition(Kind kind, unsigned int lid);
-
+	void update(unsigned int location, Info newString);
 	void flush(unsigned int location, Info newString);
   public:
 	enum Kind { Parent, Groupoff, WATCardOffice, NameServer, Truck, BottlingPlant, Student, Vending, Courier };
@@ -27,4 +24,9 @@ _Monitor Printer {
 	void print( Kind kind, unsigned int lid, char state );
 	void print( Kind kind, unsigned int lid, char state, unsigned int value1 );
 	void print( Kind kind, unsigned int lid, char state, unsigned int value1, unsigned int value2 );
+
+  private:
+	// get column in buffer information should be depending on its kind
+	int getPosition(Kind kind);
+	int getPosition(Kind kind, unsigned int lid);
 };

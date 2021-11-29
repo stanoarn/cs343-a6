@@ -19,7 +19,7 @@ int main(int argc, char * argv[]){
           case 4:
             if (strcmp( argv[3], "d" ) != 0){
                 processors = stoi( argv[3] );
-                if ( processors <= 0 ) throw 1; 
+                if ( processors <= 0 ) throw 1;
             }
           case 3:
             if (strcmp( argv[2], "d" ) != 0){
@@ -43,9 +43,9 @@ int main(int argc, char * argv[]){
     // process config file
     ConfigParms configParms;
     processConfigFile(configFile, configParms);
-    
+
     // set processors
-    uProcessor p[processors - 1]; // number of kernel threads 
+    uProcessor p[processors - 1]; // number of kernel threads
     if ( processors == 1 ) uThisProcessor().setPreemption( 0 ); // turn off time - slicing for reproducibility
 
     // initialize concession service
@@ -57,17 +57,16 @@ int main(int argc, char * argv[]){
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
     BottlingPlant plant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
-    Truck truck(printer, nameServer, plant, configParms.numVendingMachines, configParms.maxStockPerFlavour);
 
     Student * students[configParms.numStudents];
     for (int i = 0; i < configParms.numStudents; i++){  // create voters
         students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);
-    }   // for  
+    }   // for
 
     VendingMachine * machines[configParms.numVendingMachines];
     for (int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
-    }   // for  
+    }   // for
 
     // delete students and vending machines
     for (int i = 0; i < configParms.numStudents; i++){  // create voters
@@ -76,5 +75,5 @@ int main(int argc, char * argv[]){
 
     for (int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
-    }   // for  
+    }   // for
 }   // main
