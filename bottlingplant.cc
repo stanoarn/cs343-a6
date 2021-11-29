@@ -2,17 +2,21 @@ BottlingPlant::BottlingPlant( Printer & prt, NameServer & nameServer, unsigned i
 printer(prt), nameServer(nameServer), truck(Truck(prt, nameServer, *this, numVendingMachines, maxStockPerFlavour)), numVendingMachines(numVendingMachines), maxShippedPerFlavour(maxShippedPerFlavour), maxStockPerFlavour(maxStockPerFlavour), timeBetweenShipments(timeBetweenShipments)
 {}
 BottlingPlant::void main(){
-    for (;/*termination condition*/;) {
-        yield(timeBetweenShipments);//pruduction
-        productionReady.V();
-        truckReady.P();
-        for (int i = 0; i < 4; i += 1){
-            truckCargo[i] = maxShippedPerFlavour;
+    for (;!shutdown;) {
+        _Accept (~BottlingPlant) {
+            shutdown = true;
         }
-        //if shutting down {
-        //  shutdown = true;
-        //}
-        productionReady.V();
+        _Else {
+            yield(timeBetweenShipments);//pruduction
+            //also accept destor here?
+            productionReady.V();
+            truckReady.P();
+            for (int i = 0; i < 4; i += 1){
+                truckCargo[i] = maxShippedPerFlavour;
+            }
+            //also accept destor here?
+            productionReady.V();
+        }
     }
 }
 BottlingPlant::void getShipment( unsigned int cargo[] ){
