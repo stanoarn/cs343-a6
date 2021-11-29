@@ -15,14 +15,16 @@ void VendingMachine::main(){
         else if (card.getBalance() < sodaCost){
           status = Funds;
         }
-        stock[flavour] = stock[flavour] - 1;
-        else if (mprng(5 - 1) == 0){
-          status = Free;
-        }
         else {
-          card.withdraw(sodaCost);
-          status = Succ;
-        }
+          stock[flavour] = stock[flavour] - 1;
+          if (mprng(5 - 1) == 0){
+            status = Free;
+          }
+          else {
+            card.withdraw(sodaCost);
+            status = Succ;
+          }//else
+        }//else
         bench.signalBlock();
       }//accept buy
     }
