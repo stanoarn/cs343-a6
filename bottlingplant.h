@@ -6,6 +6,12 @@ _Task BottlingPlant {
     Pickup = 'P',
     Finished = 'F'
   };
+  Printer & printer;
+  NameServer & nameServer;
+  Truck truck;
+  bool shutdown = false;
+  uSemaphore truckReady = uSemaphore(0), productionReady = uSemaphore(0);
+  unsigned int numVendingMachines, maxShippedPerFlavour, maxStockPerFlavour, timeBetweenShipments, * truckCargo = nullptr;
   public:
 	_Event Shutdown {};					// shutdown plant
 	BottlingPlant( Printer & prt, NameServer & nameServer, unsigned int numVendingMachines,
