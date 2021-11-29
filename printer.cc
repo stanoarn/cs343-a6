@@ -89,26 +89,26 @@ numStudents(numStudents),  numVendingMachines(numVendingMachines), numCouriers(n
     cout << "Plant" << "\t";
 
     // students header
-    for( unsigned int i = 0; i < numStudents; i++){ 
+    for( unsigned int i = 0; i < numStudents; i++){
         // print voter ids in the header
         cout << "Stud" << i << "\t";
     }
 
     // vending machines header
-    for( unsigned int i = 0; i < numVendingMachines; i++){ 
+    for( unsigned int i = 0; i < numVendingMachines; i++){
         // print voter ids in the header
         cout << "Mach" << i << "\t";
     }
 
     // courier header
-    for( unsigned int i = 0; i < numCouriers; i++){ 
+    for( unsigned int i = 0; i < numCouriers; i++){
         // print voter ids in the header
         cout << "Cour" << i << "\t";
     }
 
     // print sepearator in header
     cout << endl;
-    for( unsigned int i = 0; i < numColumns; i++){ 
+    for( unsigned int i = 0; i < numColumns; i++){
         // print separators in the header
         if (i){
             cout << "\t";

@@ -9,7 +9,7 @@ _Monitor Printer {
 		unsigned int value1;
 		unsigned int value2;
 		unsigned int numValues;
-	}
+	};
 	Info* buffer;
 
 	// get column in buffer information should be depending on its kind
