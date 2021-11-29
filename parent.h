@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MPRNG.h"
+
 _Monitor Printer;
 _Monitor Bank;
 extern MPRNG mprng;
@@ -16,4 +18,5 @@ _Task Parent {
 	void main();
   public:
 	Parent( Printer & prt, Bank & bank, unsigned int numStudents, unsigned int parentalDelay );
+  ~Parent();
 };
