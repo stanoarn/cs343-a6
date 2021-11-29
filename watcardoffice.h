@@ -3,9 +3,11 @@
 #include "watcard.h"
 #include <queue>
 #include <vector>
+#include "MPRNG.h"
 
 _Monitor Printer;
 _Monitor Bank;
+extern MPRNG mprng;
 
 using namespace std;
 
@@ -13,7 +15,7 @@ _Task WATCardOffice {
 	struct Job {							// marshalled arguments and return future
 		unsigned int sid;     // student id
 		unsigned int amount;
-		WATCard * card;
+		WATCard * watcard;
 		WATCard::FWATCard result;			// return future
 		Job( unsigned int sid, unsigned int amount, WATCard * card ) : sid(sid), amount(amount), card(card) {}
 	};
