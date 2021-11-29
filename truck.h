@@ -15,6 +15,7 @@ _Task Truck {
   BottlingPlant & plant;
   unsigned int numVendingMachines, maxStockPerFlavour, cargo[4] = {0,0,0,0}, machineIndex = 0;
   bool empty();
+  unsigned int totalShipment();
   void restock(VendingMachine * machine);
   public:
 	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,

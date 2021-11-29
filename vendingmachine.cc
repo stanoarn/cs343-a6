@@ -3,10 +3,16 @@ printer(prt), nameServer(nameServer), id(id), sodaCost(sodaCost)
 {};
 
 void VendingMachine::main(){
+  printer.print(Printer::Kind::Vending, Start);
   for (;/*condition to terminate*/;){
     try {
+      //accept destor
+            //printer.print(Printer::Kind::Vending, Finished);
       _Accept (inventory){
-        _Accept (restocked);
+        printer.print(Printer::Kind::Vending, ReloadStart);
+        _Accept (restocked){
+            printer.print(Printer::Kind::Vending, ReloadDone);
+        }
       }//accept inventory
       or _Accept (buy){
         if (stock[flavour] == 0){
@@ -18,10 +24,12 @@ void VendingMachine::main(){
         else {
           stock[flavour] = stock[flavour] - 1;
           if (mprng(5 - 1) == 0){
+            printer.print(Printer::Kind::Vending, FreeSoda);
             status = Free;
           }
           else {
             card.withdraw(sodaCost);
+            printer.print(Printer::Kind::Vending, SodaBought, flavour, stock[flavour]);
             status = Succ;
           }//else
         }//else
