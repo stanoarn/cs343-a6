@@ -64,7 +64,9 @@ void Printer::flush(unsigned int location, Info newString){
     cout << endl;
 }
 
-Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ){
+Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ):
+numStudents(numStudents),  numVendingMachines(numVendingMachines), numCouriers(numCouriers)
+{
     unsigned int numColumns = 6 + numStudents + numVendingMachines + numCouriers;
     buffer = new Info[numColumns];
 
