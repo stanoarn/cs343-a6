@@ -9,7 +9,13 @@ _Task Truck {
     WaitForRepair = 'X',
     Finished = 'F'
   };
+	Printer & printer;
+  NameServer & nameServer;
+  vendingMachine ** machines;
+  BottlingPlant & plant;
+  unsigned int numVendingMachines, maxStockPerFlavour, cargo[4] = {0,0,0,0}, machineIndex = 0;
+  bool empty();
+  void restock(VendingMachine * machine);
   public:
 	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
-		   unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
 };
