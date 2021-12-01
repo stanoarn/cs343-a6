@@ -20,8 +20,8 @@ void WATCardOffice::Courier::main(){
 			bank.withdraw(job->sid, job->amount);
 
 			// update WATCard
-				printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete, 
-					job->sid, job->amount);
+			printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete, 
+				job->sid, job->amount);
 			job->watcard->deposit(job->amount);
 
 			if (mprng(5) == 0){	// 1/6 change that watcard is lost
