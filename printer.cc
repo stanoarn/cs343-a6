@@ -188,4 +188,4 @@ void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value
     newString.numValues = 2;
 
     update(getPosition(kind, lid), newString);
-}
+}c

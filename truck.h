@@ -1,3 +1,5 @@
+#pragma once
+#include "bottlingplant.h"
 _Task Truck {
 	void main();
   enum States : char {

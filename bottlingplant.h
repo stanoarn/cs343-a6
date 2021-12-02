@@ -1,3 +1,6 @@
+#pragma once
+#include "nameserver.h"
+#include "truck.h"
 _Task BottlingPlant {
 	void main();
   enum States : char {

@@ -15,13 +15,13 @@ void WATCardOffice::Courier::main(){
 			if (job == NULL) break;		// no jobs available
 
 			// get money from bank
-			printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferStart, 
+			printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferStart,
 				job->sid, job->amount);
 			bank.withdraw(job->sid, job->amount);
 
 			// update WATCard
-			printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete, 
-				job->sid, job->amount);
+				printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete,
+					job->sid, job->amount);
 			job->watcard->deposit(job->amount);
 
 			if (mprng(5) == 0){	// 1/6 change that watcard is lost
@@ -58,7 +58,7 @@ void WATCardOffice::main(){
 	}
 }	// WATCardOffice::main
 
-WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ): 
+WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ):
 	printer(ptr), bank(bank), numCouriers(numCouriers){
 	// create the \ couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
@@ -89,7 +89,7 @@ WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard * car
 	jobs.push(job);
 	printer.print(Printer::Kind::WATCardOffice, WATCardOffice::States::TransferComplete, sid, amount);
 	return job->result;
-	
+
 }	// WATCardOffice::transfer
 
 Job * requestWork(){
