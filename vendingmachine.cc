@@ -10,7 +10,7 @@ VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned
 	}  // VendingMachine::VendingMachine
 
 void VendingMachine::main(){
-	printer.print(Printer::Kind::Vending, getId(), Start);
+	printer.print(Printer::Kind::Vending, getId(), Start， sodaCost);
 	for (;/*condition to terminate*/;){
 		try {
 			//accept destor
@@ -28,11 +28,11 @@ void VendingMachine::main(){
 				} else {
           			stock[comFlavour] = stock[comFlavour] - 1;
 					if (mprng(5 - 1) == 0){
-						printer.print(Printer::Kind::Vending, FreeSoda);
+						printer.print(Printer::Kind::Vending, getId(), FreeSoda);
 						status = FreeStatus;
 					} else {
 						watcard->withdraw(sodaCost);
-						printer.print(Printer::Kind::Vending, SodaBought, comFlavour, stock[comFlavour]);
+						printer.print(Printer::Kind::Vending, getId(), SodaBought, comFlavour, stock[comFlavour]);
 						status = SuccStatus;
 					} 	// if
 				} 	// if
