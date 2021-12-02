@@ -8,15 +8,15 @@ VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned
 	{}  // VendingMachine::VendingMachine
 
 void VendingMachine::main(){
-	printer.print(Printer::Kind::Vending, Start);
+	printer.print(Printer::Kind::Vending, getId(), Start);
 	for (;/*condition to terminate*/;){
 		try {
 			//accept destor
 			//printer.print(Printer::Kind::Vending, Finished);
 			_Accept (inventory){ //accept inventory
-				printer.print(Printer::Kind::Vending, ReloadStart);
+				printer.print(Printer::Kind::Vending, getId(), ReloadStart);
 				_Accept (restocked){
-					printer.print(Printer::Kind::Vending, ReloadDone);
+					printer.print(Printer::Kind::Vending, getId(), ReloadDone);
 				} // Accept
 			} or _Accept (buy){
 				if (stock[comFlavour] == 0){
@@ -24,15 +24,15 @@ void VendingMachine::main(){
 				} else if (watcard->getBalance() < sodaCost){
           status = FundsStatus;
 				} else {
-          stock[comFlavour] = stock[comFlavour] - 1;
-				if (mprng(5 - 1) == 0){
-					printer.print(Printer::Kind::Vending, FreeSoda);
-					status = FreeStatus;
-				} else {
-					watcard->withdraw(sodaCost);
-					printer.print(Printer::Kind::Vending, SodaBought, comFlavour, stock[comFlavour]);
-					status = SuccStatus;
-				} 	// if
+            stock[comFlavour] = stock[comFlavour] - 1;
+          if (mprng(5 - 1) == 0){
+            printer.print(Printer::Kind::Vending, getId(), FreeSoda);
+            status = FreeStatus;
+          } else {
+            watcard->withdraw(sodaCost);
+            printer.print(Printer::Kind::Vending, getId(), SodaBought, comFlavour, stock[comFlavour]);
+            status = SuccStatus;
+          } 	// if
 				} 	// if
 				bench.signalBlock();
 			} 	// Accept
