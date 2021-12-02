@@ -3,7 +3,6 @@
 _Task BottlingPlant;
 
 _Task Truck {
-	void main();
 	enum States : char {
 		Starting = 'S',
 		Pickup = 'P',
@@ -18,6 +17,8 @@ _Task Truck {
 	VendingMachine ** machines;
 	BottlingPlant & plant;
 	unsigned int numVendingMachines, maxStockPerFlavour, cargo[4] = {0,0,0,0}, machineIndex = 0;
+	
+	void main();
 	bool empty();
 	unsigned int totalShipment();
 	void restock(VendingMachine * machine);
