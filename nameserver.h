@@ -9,7 +9,7 @@ _Task NameServer {
     Finished = 'F'
   };
   Printer & printer;
-  unsigned int numVendingMachines, numStudents, 
+  unsigned int numVendingMachines, numStudents,
                 studentId = 0;//communication variable for getMachine
   VendingMachine ** machines;
   unsigned int machineIndex = 0;

@@ -17,6 +17,7 @@ _Task Groupoff {
 	};
 	Printer & printer;
 	unsigned int numStudents, sodaCost, groupoffDelay;
+  //vector bad, statically sized array good
 	vector<WATCard::FWATCard *> giftcards;	// list of future giftcards
 	vector<WATCard *> cards;	// list of cards assigned real WATCards
 	void main();

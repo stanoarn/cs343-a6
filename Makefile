@@ -1,4 +1,4 @@
-CXX = u++					# compiler
+CXX = ../../uCPP/u++-7.0.0/bin/u++					# compiler
 CXXFLAGS = -g -multi -O2 -Wall -Wextra -MMD # compiler flags
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}	# makefile name
 

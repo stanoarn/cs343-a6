@@ -2,6 +2,7 @@
 #include "nameserver.h"
 #include "printer.h"
 #include "truck.h"
+#include <uSemaphore.h>
 _Task BottlingPlant {
 	void main();
   enum States : char {

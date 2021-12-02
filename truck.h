@@ -1,5 +1,7 @@
 #pragma once
-#include "bottlingplant.h"
+
+_Task BottlingPlant;
+
 _Task Truck {
 	void main();
   enum States : char {
@@ -13,12 +15,12 @@ _Task Truck {
   };
 	Printer & printer;
   NameServer & nameServer;
-  vendingMachine ** machines;
+  VendingMachine ** machines;
   BottlingPlant & plant;
   unsigned int numVendingMachines, maxStockPerFlavour, cargo[4] = {0,0,0,0}, machineIndex = 0;
   bool empty();
   unsigned int totalShipment();
   void restock(VendingMachine * machine);
   public:
-	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
+  Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant, unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
 };

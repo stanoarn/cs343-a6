@@ -1,8 +1,9 @@
 #pragma once
 #include "MPRNG.h"
-#include "printer.h"
-#include "nameserver.h"
 #include "watcard.h"
+
+_Monitor Printer;
+_Task NameServer;
 
 extern MPRNG mprng;
 
