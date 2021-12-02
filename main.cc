@@ -68,15 +68,15 @@ int main(int argc, char * argv[]){
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
     BottlingPlant plant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
+        
+    VendingMachine * machines[configParms.numVendingMachines];
+    for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
+        machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
+    }   // for
 
     Student * students[configParms.numStudents];
     for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);
-    }   // for
-
-    VendingMachine * machines[configParms.numVendingMachines];
-    for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
-        machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
     }   // for
 
     // delete students and vending machines
