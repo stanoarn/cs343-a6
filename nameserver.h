@@ -1,5 +1,6 @@
 #pragma once
 #include "vendingmachine.h"
+_Monitor Printer;
 _Task NameServer {
 	void main();
   enum States : char {

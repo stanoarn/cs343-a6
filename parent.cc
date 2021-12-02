@@ -14,14 +14,14 @@ void Parent::main(){
             unsigned int sid = mprng( numStudents - 1 );    // select random student
 			unsigned int amount = mprng ( 1, 3 );   // select random amount of money
 
-			bank.deposit( id, amount );					// Deposit the amount to the selected student's balance
-			prt.print( Printer::Parent, Parent::States::Deposit, sid, amount );
+			bank.deposit( sid, amount );					// Deposit the amount to the selected student's balance
+			printer.print( Printer::Parent, Parent::States::Deposit, sid, amount );
         }
     }
 }   // Parent::main
 
 Parent::Parent( Printer & prt, Bank & bank, unsigned int numStudents, unsigned int parentalDelay ):
-    printer(ptr), bank(bank), numStudents(numStudents), parentalDelay(parentalDelay) {}   // Parent::Parent
+    printer(prt), bank(bank), numStudents(numStudents), parentalDelay(parentalDelay) {}   // Parent::Parent
 
 Parent::~Parent(){
     printer.print(Printer::Kind::Parent, Parent::States::Finished);

@@ -17,7 +17,7 @@ _Task WATCardOffice {
 		unsigned int amount;
 		WATCard * watcard;
 		WATCard::FWATCard result;			// return future
-		Job( unsigned int sid, unsigned int amount, WATCard * card ) : sid(sid), amount(amount), card(card) {}
+		Job( unsigned int sid, unsigned int amount, WATCard * card ) : sid(sid), amount(amount), watcard(card) {}
 	};
 	_Task Courier {
 		enum States : char {
@@ -38,7 +38,6 @@ _Task WATCardOffice {
 		~Courier();
 	};					// communicates with bank
 
-	void main();
 	enum States : char {
 		Start = 'S',
 		WorkComplete = 'W',
