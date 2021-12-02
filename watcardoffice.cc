@@ -47,7 +47,7 @@ WATCardOffice::Courier::~Courier(){
 // _________________________ WATCardOffice Class _________________________
 
 void WATCardOffice::main(){
-	prt.print( Printer::Kind::WATCardOffice, WATCardOffice::Start );
+	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::Start );
 
 	for ( ;; ){
 		_Accept(~WATCardOffice){
@@ -58,23 +58,23 @@ void WATCardOffice::main(){
 	}
 }	// WATCardOffice::main
 
-WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ):
-	printer(ptr), bank(bank), numCouriers(numCouriers){
+WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ):
+	printer(prt), bank(bank), numCouriers(numCouriers){
 	// create the \ couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
-		couriers.push_back( new Courier( prt, bank, *this, i ) );
+		couriers.push_back( new Courier( printer, bank, *this, i ) );
 	}	// for
 }	// WATCardOffice::WATCardOffice
 
-~WATCardOffice(){
+WATCardOffice::~WATCardOffice(){
 	// delete the couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
-		couriers.push_back( new Courier( prt, bank, *this, i ) );
+		couriers.push_back( new Courier( printer, bank, *this, i ) );
 	}	// for
 	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::States::Finished );
 }	// WATCardOffice::~WATCardOffice
 
-WATCard::FWATCard create( unsigned int sid, unsigned int amount ){
+WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ){
 	WATCard * watcard = new WATCard();	// student must remember to free this memory
 	// obtain funding from bank
 	Job * job = new Job(sid, amount, watcard);
@@ -83,7 +83,7 @@ WATCard::FWATCard create( unsigned int sid, unsigned int amount ){
 	return job->result;
 }	// WATCardOffice::create
 
-WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard * card ){
+WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard * card ){
 	// obtain funding from bank
 	Job * job = new Job(sid, amount, card);
 	jobs.push(job);
@@ -92,11 +92,11 @@ WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard * car
 
 }	// WATCardOffice::transfer
 
-Job * requestWork(){
+WATCardOffice::Job * WATCardOffice::requestWork(){
 	if ( jobs.empty() ) return NULL;															// If null is returned that means everything is tearing down.
 	Job * job = jobs.front();
 	jobs.pop();
 
-	prt.print( Printer::Kind::WATCardOffice, WATCardOffice::WorkComplete );
+	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::WorkComplete );
 	return job;
 }	// WATCardOffice::requestWork

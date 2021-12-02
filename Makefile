@@ -18,7 +18,6 @@ DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
 
 all : ${EXEC}									# build all executables
 
-test : ${TESTS}								# build all tests
 
 ${EXEC} : ${OBJECTS}
 	${CXX} ${CXXFLAGS} $^ -o $@

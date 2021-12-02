@@ -67,7 +67,7 @@ void Student::main(){
         try {
             card = watcard();
             delete card;
-        } catch (WATCardOffice::Lost){}
+        } catch (WATCardOffice::Lost &){}
     }
     _Select(giftcard){
         card = giftcard;

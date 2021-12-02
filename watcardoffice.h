@@ -45,7 +45,7 @@ _Task WATCardOffice {
 		TransferComplete = 'T',
 		Finished = 'F'
 	};
-	Printer * printer;
+	Printer & printer;
 	Bank & bank;
 	vector<Courier *> couriers;
 	queue<Job *> jobs;
