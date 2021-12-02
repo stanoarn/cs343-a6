@@ -8,15 +8,15 @@ VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned
 	{}  // VendingMachine::VendingMachine
 
 void VendingMachine::main(){
-	printer.print(Printer::Kind::Vending, Start);
+	printer.print(Printer::Kind::Vending, getId(), Start);
 	for (;/*condition to terminate*/;){
 		try {
 			//accept destor
 			//printer.print(Printer::Kind::Vending, Finished);
 			_Accept (inventory){ //accept inventory
-				printer.print(Printer::Kind::Vending, ReloadStart);
+				printer.print(Printer::Kind::Vending, getId(), ReloadStart);
 				_Accept (restocked){
-					printer.print(Printer::Kind::Vending, ReloadDone);
+					printer.print(Printer::Kind::Vending, getId(), ReloadDone);
 				} // Accept
 			} or _Accept (buy){
 				if (stock[comFlavour] == 0){
