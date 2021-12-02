@@ -77,6 +77,7 @@ int main(int argc, char * argv[]){
     VendingMachine * machines[configParms.numVendingMachines];
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
+        nameServer.VMregister(machines[i]);
     }   // for
 
     // delete students and vending machines

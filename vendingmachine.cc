@@ -56,8 +56,8 @@ void VendingMachine::buy( Flavours flavour, WATCard & card ){
 		case FreeStatus:
 		_Throw Free();
 		break;
-    case SuccStatus:
-    break;
+		case SuccStatus:
+		break;
 	}	//switch
 }	// VendingMachine::buy
 

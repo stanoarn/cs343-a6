@@ -11,7 +11,6 @@ void NameServer::main(){
     for (;machineIndex < numVendingMachines; machineIndex += 1){
         _Accept (VMregister){
             machines[machineIndex] = newMachine;
-            machineIndex += 1;
             printer.print(Printer::Kind::NameServer, Register, newMachine->getId());
             bench.signalBlock();
         }   //accept VMregister
