@@ -20,19 +20,19 @@ void VendingMachine::main(){
 				} // Accept
 			} or _Accept (buy){
 				if (stock[comFlavour] == 0){
-				  status = StockStatus;
+				  	status = StockStatus;
 				} else if (watcard->getBalance() < sodaCost){
-          status = FundsStatus;
+          			status = FundsStatus;
 				} else {
-          stock[comFlavour] = stock[comFlavour] - 1;
-				if (mprng(5 - 1) == 0){
-					printer.print(Printer::Kind::Vending, FreeSoda);
-					status = FreeStatus;
-				} else {
-					watcard->withdraw(sodaCost);
-					printer.print(Printer::Kind::Vending, SodaBought, comFlavour, stock[comFlavour]);
-					status = SuccStatus;
-				} 	// if
+          			stock[comFlavour] = stock[comFlavour] - 1;
+					if (mprng(5 - 1) == 0){
+						printer.print(Printer::Kind::Vending, FreeSoda);
+						status = FreeStatus;
+					} else {
+						watcard->withdraw(sodaCost);
+						printer.print(Printer::Kind::Vending, SodaBought, comFlavour, stock[comFlavour]);
+						status = SuccStatus;
+					} 	// if
 				} 	// if
 				bench.signalBlock();
 			} 	// Accept
@@ -43,8 +43,8 @@ void VendingMachine::main(){
 }	// VendingMachine::main
 
 void VendingMachine::buy( Flavours flavour, WATCard & card ){
-  watcard = &card;
-  comFlavour = flavour;
+  	watcard = &card;
+  	comFlavour = flavour;
 	bench.wait();
 	switch (status){
 		case StockStatus:
