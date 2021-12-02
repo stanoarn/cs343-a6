@@ -18,8 +18,9 @@ _Task BottlingPlant {
 	uSemaphore truckReady = uSemaphore(0), productionReady = uSemaphore(0);
 	unsigned int numVendingMachines, maxShippedPerFlavour, maxStockPerFlavour;
 	unsigned int timeBetweenShipments, * truckCargo = nullptr;
-	
+
 	void main();
+	
 	public:
 	_Event Shutdown {};					// shutdown plant
 	BottlingPlant( Printer & prt, NameServer & nameServer, unsigned int numVendingMachines,
