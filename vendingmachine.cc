@@ -11,14 +11,16 @@ void VendingMachine::main(){
 	printer.print(Printer::Kind::Vending, getId(), Start);
 	for (;/*condition to terminate*/;){
 		try {
-			//accept destor
-			//printer.print(Printer::Kind::Vending, Finished);
-			_Accept (inventory){ //accept inventory
+			_Accept(~VendingMachine){
+        printer.print(Printer::Kind::Vending, Finished);
+      }
+			or _Accept (inventory){ //accept inventory
 				printer.print(Printer::Kind::Vending, getId(), ReloadStart);
 				_Accept (restocked){
 					printer.print(Printer::Kind::Vending, getId(), ReloadDone);
 				} // Accept
-			} or _Accept (buy){
+			}
+      or _Accept (buy){
 				if (stock[comFlavour] == 0){
 				  status = StockStatus;
 				} else if (watcard->getBalance() < sodaCost){
