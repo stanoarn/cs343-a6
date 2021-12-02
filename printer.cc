@@ -4,36 +4,41 @@
 
 using namespace std;
 
-int getPosition(Kind kind){
+int Printer::getPosition(Printer::Kind kind, unsigned int lid = 0){
     switch(kind){
-        case Kind::Parent:
+        case Printer::Kind::Parent:
             return 0;
-        case Kind::Groupoff:
+        case Printer::Kind::Groupoff:
             return 1;
-        case Kind::WATCardOffice:
+        case Printer::Kind::WATCardOffice:
             return 2;
-        case Kind::NameServer:
+        case Printer::Kind::NameServer:
             return 3;
-        case Kind::Truck:
+        case Printer::Kind::Truck:
             return 4;
-        case Kind::BottlingPlant:
+        case Printer::Kind::BottlingPlant:
             return 5;
-    }
-}
-
-int getPosition(Kind kind, unsigned int lid){
-    switch(kind){
-        case Kind::Student:
+        case Printer::Kind::Student:
             return 6 + lid;
-        case Kind::Vending:
+        case Printer::Kind::Vending:
             return 6 + numStudents + lid;
-        case Kind::Courier:
+        case Printer::Kind::Courier:
             return 6 + numStudents + numVendingMachines + lid;
+        default:
+            return -1;
     }
-}
+}   // Printer::getPosition
+
+void Printer::update(unsigned int location, Info newString){
+    if (!buffer[location].filled){
+        buffer[location] = newString;
+    } else {
+        flush(location, newString);
+    }
+}   // Printer::update
 
 void Printer::flush(unsigned int location, Info newString){
-    for(unsigned int i = 0; i < voters; i++){
+    for(unsigned int i = 0; i < 6 + numStudents + numVendingMachines + numCouriers; i++){
         if (i){
             cout << "\t";
         }
@@ -55,9 +60,11 @@ void Printer::flush(unsigned int location, Info newString){
         }
     }
     cout << endl;
-}
+}   // Printer::flush
 
-Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ){
+Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ):
+numStudents(numStudents),  numVendingMachines(numVendingMachines), numCouriers(numCouriers)
+{
     unsigned int numColumns = 6 + numStudents + numVendingMachines + numCouriers;
     buffer = new Info[numColumns];
 
@@ -80,26 +87,26 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
     cout << "Plant" << "\t";
 
     // students header
-    for( unsigned int i = 0; i < numStudents; i++){ 
+    for( unsigned int i = 0; i < numStudents; i++){
         // print voter ids in the header
         cout << "Stud" << i << "\t";
     }
 
     // vending machines header
-    for( unsigned int i = 0; i < numVendingMachines; i++){ 
+    for( unsigned int i = 0; i < numVendingMachines; i++){
         // print voter ids in the header
         cout << "Mach" << i << "\t";
     }
 
     // courier header
-    for( unsigned int i = 0; i < numCouriers; i++){ 
+    for( unsigned int i = 0; i < numCouriers; i++){
         // print voter ids in the header
         cout << "Cour" << i << "\t";
     }
 
     // print sepearator in header
     cout << endl;
-    for( unsigned int i = 0; i < numColumns; i++){ 
+    for( unsigned int i = 0; i < numColumns; i++){
         // print separators in the header
         if (i){
             cout << "\t";
@@ -107,48 +114,40 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
         cout << "*******";
     }
     cout << endl;
-}
+}   // Printer::Printer
 
 Printer::~Printer(){
     // final flush
     Info newString;
-    flush(Kind::Parent, newString);
+    flush(Printer::Kind::Parent, newString);
 
     // print footer
     cout << "***********************" << endl;
 
     // delete buffer
     delete [] buffer;
-}
+}   // Printer::~Printer
 
-void Printer::print( Kind kind, char state ){
+void Printer::print( Printer::Kind kind, char state ){
     Info newString;
     newString.filled = true;
     newString.state = state;
     newString.numValues = 0;
 
-    if (!buffer[getPosition(kind)].filled){
-        buffer[getPosition(kind)] = newString;
-    } else {
-        flush(getPosition(kind), newString);
-    }
-}
+    update(getPosition(kind), newString);
+}   // Printer::print
 
-void Printer::print( Kind kind, char state, unsigned int value1 ){
+void Printer::print( Printer::Kind kind, char state, unsigned int value1 ){
     Info newString;
     newString.filled = true;
     newString.state = state;
     newString.value1 = value1;
     newString.numValues = 1;
 
-    if (!buffer[getPosition(kind)].filled){
-        buffer[getPosition(kind)] = newString;
-    } else {
-        flush(getPosition(kind), newString);
-    }
-}
+    update(getPosition(kind), newString);
+}   // Printer::print
 
-void Printer::print( Kind kind, char state, unsigned int value1, unsigned int value2 ){
+void Printer::print( Printer::Kind kind, char state, unsigned int value1, unsigned int value2 ){
     Info newString;
     newString.filled = true;
     newString.state = state;
@@ -156,41 +155,29 @@ void Printer::print( Kind kind, char state, unsigned int value1, unsigned int va
     newString.value2 = value2;
     newString.numValues = 2;
 
-    if (!buffer[getPosition(kind)].filled){
-        buffer[getPosition(kind)] = newString;
-    } else {
-        flush(getPosition(kind), newString);
-    }
-}
+    update(getPosition(kind), newString);
+}   // Printer::print
 
-void Printer::print( Kind kind, unsigned int lid, char state ){
+void Printer::print( Printer::Kind kind, unsigned int lid, char state ){
     Info newString;
     newString.filled = true;
     newString.state = state;
     newString.numValues = 0;
 
-    if (!buffer[getPosition(kind, lid)].filled){
-        buffer[getPosition(kind, lid)] = newString;
-    } else {
-        flush(getPosition(kind, lid), newString);
-    }
-}
+    update(getPosition(kind, lid), newString);
+}   // Printer::print
 
-void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value1 ){
+void Printer::print( Printer::Kind kind, unsigned int lid, char state, unsigned int value1 ){
     Info newString;
     newString.filled = true;
     newString.state = state;
     newString.value1 = value1;
     newString.numValues = 1;
 
-    if (!buffer[getPosition(kind, lid)].filled){
-        buffer[getPosition(kind, lid)] = newString;
-    } else {
-        flush(getPosition(kind, lid), newString);
-    }
-}
+    update(getPosition(kind, lid), newString);
+}   // Printer::print
 
-void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value1, unsigned int value2 ){
+void Printer::print( Printer::Kind kind, unsigned int lid, char state, unsigned int value1, unsigned int value2 ){
     Info newString;
     newString.filled = true;
     newString.state = state;
@@ -198,9 +185,5 @@ void Printer::print( Kind kind, unsigned int lid, char state, unsigned int value
     newString.value2 = value2;
     newString.numValues = 2;
 
-    if (!buffer[getPosition(kind, lid)].filled){
-        buffer[getPosition(kind, lid)] = newString;
-    } else {
-        flush(getPosition(kind, lid), newString);
-    }
-}
+    update(getPosition(kind, lid), newString);
+}   // Printer::print

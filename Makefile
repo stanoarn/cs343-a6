@@ -6,11 +6,15 @@ OBJECTS = bank.o bottlingplant.o config.o groupoff.o vendingMachineTest.o namese
 	vendingmachine.o watcard.o watcardoffice.o
 EXEC = soda
 
+TESTS = planttest
+
+PLANTOBJS = bottlingplant.o
+
 DEPENDS = ${OBJECTS:.o=.d}			# substitute ".o" with ".d"
 
 #############################################################
 
-.PHONY : all clean
+.PHONY : all clean test
 
 all : ${EXEC}									# build all executables
 

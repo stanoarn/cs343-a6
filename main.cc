@@ -3,6 +3,17 @@
 #include <string>           // access: string
 #include "MPRNG.h"
 #include "config.h"
+#include "bank.h"
+#include "bottlingplant.h"
+#include "groupoff.h"
+#include "nameserver.h"
+#include "parent.h"
+#include "printer.h"
+#include "student.h"
+#include "truck.h"
+#include "vendingmachine.h"
+#include "watcard.h"
+#include "watcardoffice.h"
 
 using namespace std;
 
@@ -19,7 +30,7 @@ int main(int argc, char * argv[]){
           case 4:
             if (strcmp( argv[3], "d" ) != 0){
                 processors = stoi( argv[3] );
-                if ( processors <= 0 ) throw 1; 
+                if ( processors <= 0 ) throw 1;
             }
           case 3:
             if (strcmp( argv[2], "d" ) != 0){
@@ -42,39 +53,38 @@ int main(int argc, char * argv[]){
 
     // process config file
     ConfigParms configParms;
-    processConfigFile(configFile, configParms);
-    
+    processConfigFile(configFile.c_str(), configParms);
+
     // set processors
-    uProcessor p[processors - 1]; // number of kernel threads 
+    uProcessor p[processors - 1]; // number of kernel threads
     if ( processors == 1 ) uThisProcessor().setPreemption( 0 ); // turn off time - slicing for reproducibility
 
     // initialize concession service
-    Printer printer(configParms.numStudents, configParms.numVendingMachines, configParms.NumCouriers);
+    Printer printer(configParms.numStudents, configParms.numVendingMachines, configParms.numCouriers);
     Bank bank(configParms.numStudents);
     Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
-    Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost);
+    Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost, configParms.groupoffDelay);
     WATCardOffice cardOffice(printer, bank, configParms.numCouriers);
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
     BottlingPlant plant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
-    Truck truck(printer, nameServer, plant, configParms.numVendingMachines, configParms.maxStockPerFlavour);
 
     Student * students[configParms.numStudents];
-    for (int i = 0; i < configParms.numStudents; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);
-    }   // for  
+    }   // for
 
     VendingMachine * machines[configParms.numVendingMachines];
-    for (int i = 0; i < configParms.numVendingMachines; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
-    }   // for  
+    }   // for
 
     // delete students and vending machines
-    for (int i = 0; i < configParms.numStudents; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         delete students[i];
     }   // for
 
-    for (int i = 0; i < configParms.numVendingMachines; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
-    }   // for  
+    }   // for
 }   // main
