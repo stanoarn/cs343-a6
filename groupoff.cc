@@ -9,7 +9,7 @@ void Groupoff::main(){
     }
 
     for (unsigned int i = 0; i < numStudents; ){ // periodically create real WATCards for each student
-        ~Accept(~Groupoff){ // loops until destructor is called or all student have a real card
+        _Accept(~Groupoff){ // loops until destructor is called or all student have a real card
             break;
         } _Else {
             yield(groupoffDelay);   // yield before creating each card
