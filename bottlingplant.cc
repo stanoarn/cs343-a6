@@ -9,29 +9,27 @@ BottlingPlant::BottlingPlant( Printer & prt, NameServer & nameServer, unsigned i
 
 void BottlingPlant::main(){
     printer.print(Printer::Kind::BottlingPlant, Start);
+    yield(timeBetweenShipments);//pruduction
     for (;!shutdown;) {
         _Accept (~BottlingPlant) {
             shutdown = true;
-        } _Else {
-            yield(timeBetweenShipments);//pruduction
+        }
+        or _Accept(getShipment) {
             printer.print(Printer::Kind::BottlingPlant, Generating, 4*maxShippedPerFlavour);
-            productionReady.V();
-            truckReady.P();
             for (int i = 0; i < 4; i += 1){
                 truckCargo[i] = maxShippedPerFlavour;
             }   // for
             printer.print(Printer::Kind::BottlingPlant, Pickup);
-            productionReady.V();
+            bench.signalBlock();
+            yield(timeBetweenShipments);//pruduction
         }   // Accept
     }
     printer.print(Printer::Kind::BottlingPlant, Finished);
 }   // BottlingPlant::main
 
 void BottlingPlant::getShipment( unsigned int cargo[] ){
-    productionReady.P();
     truckCargo = cargo;
-    truckReady.V();
-    productionReady.P();
+    bench.wait();
     if (shutdown) {
         _Throw Shutdown();
     }   // if

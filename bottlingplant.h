@@ -2,7 +2,6 @@
 #include "nameserver.h"
 #include "printer.h"
 #include "truck.h"
-#include <uSemaphore.h>
 
 _Task BottlingPlant {
 	enum States : char {
@@ -15,7 +14,7 @@ _Task BottlingPlant {
 	NameServer & nameServer;
 	Truck truck;
 	bool shutdown = false;
-	uSemaphore truckReady = uSemaphore(0), productionReady = uSemaphore(0);
+  uCondition bench;
 	unsigned int numVendingMachines, maxShippedPerFlavour, maxStockPerFlavour;
 	unsigned int timeBetweenShipments, * truckCargo = nullptr;
 
