@@ -10,20 +10,18 @@ VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned
 	}  // VendingMachine::VendingMachine
 
 void VendingMachine::main(){
-	printer.print(Printer::Kind::Vending, getId(), Start， sodaCost);
+	printer.print(Printer::Kind::Vending, getId(), Start, sodaCost);
 	for (;/*condition to terminate*/;){
 		try {
 			_Accept(~VendingMachine){
-        printer.print(Printer::Kind::Vending, getId(), Finished);
-        break;
-      }
-			or _Accept (inventory){ //accept inventory
+				printer.print(Printer::Kind::Vending, getId(), Finished);
+				break;
+			} or _Accept (inventory){ //accept inventory
 				printer.print(Printer::Kind::Vending, getId(), ReloadStart);
 				_Accept (restocked){
 					printer.print(Printer::Kind::Vending, getId(), ReloadDone);
 				} // Accept
-			}
-      or _Accept (buy){
+			} or _Accept (buy){
 				if (stock[comFlavour] == 0){
 				  	status = StockStatus;
 				} else if (watcard->getBalance() < sodaCost){

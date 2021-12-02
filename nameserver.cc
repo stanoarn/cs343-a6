@@ -8,7 +8,6 @@ NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned
     {}  // NameServer::NameServer
 
 void NameServer::main(){
-  std::cout << " here " << std::endl;
     printer.print(Printer::Kind::NameServer, Start);
     for (;machineIndex < numVendingMachines; machineIndex += 1){
         _Accept (VMregister){
