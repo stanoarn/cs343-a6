@@ -10,7 +10,7 @@ extern MPRNG mprng;
 
 _Task Student {
   enum States : char {
-    Starting = 'S',
+    Start = 'S',
     SelectMachine = 'V',
     GiftCardSoda = 'G',
     FreeSodaGC = 'a',

@@ -70,21 +70,21 @@ int main(int argc, char * argv[]){
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
 
     Student * students[configParms.numStudents];
-    for (int i = 0; i < configParms.numStudents; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);
     }   // for
 
     VendingMachine * machines[configParms.numVendingMachines];
-    for (int i = 0; i < configParms.numVendingMachines; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
     }   // for
 
     // delete students and vending machines
-    for (int i = 0; i < configParms.numStudents; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         delete students[i];
     }   // for
 
-    for (int i = 0; i < configParms.numVendingMachines; i++){  // create voters
+    for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
     }   // for
 }   // main

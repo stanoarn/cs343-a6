@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int getPosition(Printer::Kind kind){
+int Printer::getPosition(Printer::Kind kind, unsigned int lid = 0){
     switch(kind){
         case Printer::Kind::Parent:
             return 0;
@@ -18,29 +18,27 @@ int getPosition(Printer::Kind kind){
             return 4;
         case Printer::Kind::BottlingPlant:
             return 5;
-    }
-}
-
-int getPosition(Printer::Kind kind, unsigned int lid){
-    switch(kind){
         case Printer::Kind::Student:
             return 6 + lid;
         case Printer::Kind::Vending:
             return 6 + numStudents + lid;
         case Printer::Kind::Courier:
             return 6 + numStudents + numVendingMachines + lid;
+        default:
+            return -1;
     }
-}
+}   // Printer::getPosition
+
 void Printer::update(unsigned int location, Info newString){
     if (!buffer[location].filled){
         buffer[location] = newString;
     } else {
         flush(location, newString);
     }
-}
+}   // Printer::update
 
 void Printer::flush(unsigned int location, Info newString){
-    for(unsigned int i = 0; i < voters; i++){
+    for(unsigned int i = 0; i < 6 + numStudents + numVendingMachines + numCouriers; i++){
         if (i){
             cout << "\t";
         }
@@ -62,7 +60,7 @@ void Printer::flush(unsigned int location, Info newString){
         }
     }
     cout << endl;
-}
+}   // Printer::flush
 
 Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers ):
 numStudents(numStudents),  numVendingMachines(numVendingMachines), numCouriers(numCouriers)
@@ -116,7 +114,7 @@ numStudents(numStudents),  numVendingMachines(numVendingMachines), numCouriers(n
         cout << "*******";
     }
     cout << endl;
-}
+}   // Printer::Printer
 
 Printer::~Printer(){
     // final flush
@@ -128,7 +126,7 @@ Printer::~Printer(){
 
     // delete buffer
     delete [] buffer;
-}
+}   // Printer::~Printer
 
 void Printer::print( Printer::Kind kind, char state ){
     Info newString;
@@ -137,7 +135,7 @@ void Printer::print( Printer::Kind kind, char state ){
     newString.numValues = 0;
 
     update(getPosition(kind), newString);
-}
+}   // Printer::print
 
 void Printer::print( Printer::Kind kind, char state, unsigned int value1 ){
     Info newString;
@@ -147,7 +145,7 @@ void Printer::print( Printer::Kind kind, char state, unsigned int value1 ){
     newString.numValues = 1;
 
     update(getPosition(kind), newString);
-}
+}   // Printer::print
 
 void Printer::print( Printer::Kind kind, char state, unsigned int value1, unsigned int value2 ){
     Info newString;
@@ -158,7 +156,7 @@ void Printer::print( Printer::Kind kind, char state, unsigned int value1, unsign
     newString.numValues = 2;
 
     update(getPosition(kind), newString);
-}
+}   // Printer::print
 
 void Printer::print( Printer::Kind kind, unsigned int lid, char state ){
     Info newString;
@@ -167,7 +165,7 @@ void Printer::print( Printer::Kind kind, unsigned int lid, char state ){
     newString.numValues = 0;
 
     update(getPosition(kind, lid), newString);
-}
+}   // Printer::print
 
 void Printer::print( Printer::Kind kind, unsigned int lid, char state, unsigned int value1 ){
     Info newString;
@@ -177,7 +175,7 @@ void Printer::print( Printer::Kind kind, unsigned int lid, char state, unsigned 
     newString.numValues = 1;
 
     update(getPosition(kind, lid), newString);
-}
+}   // Printer::print
 
 void Printer::print( Printer::Kind kind, unsigned int lid, char state, unsigned int value1, unsigned int value2 ){
     Info newString;
@@ -188,4 +186,4 @@ void Printer::print( Printer::Kind kind, unsigned int lid, char state, unsigned 
     newString.numValues = 2;
 
     update(getPosition(kind, lid), newString);
-}c
+}   // Printer::print

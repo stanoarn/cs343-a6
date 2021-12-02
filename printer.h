@@ -27,6 +27,5 @@ _Monitor Printer {
 
   private:
 	// get column in buffer information should be depending on its kind
-	int getPosition(Kind kind);
 	int getPosition(Kind kind, unsigned int lid);
 };

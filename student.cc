@@ -1,10 +1,10 @@
 #include "student.h"
 #include "printer.h"
 
-Student::main(){
+void Student::main(){
     unsigned int numPurchases = mprng(1, maxPurchases);
-    unsigned int favFlavour = (VendingMachine::Flavours) mprng(3);
-    printer.print(Printer::Kind::Student, id, Student::States::Start, (int)favFlavor, numPurchases);
+    VendingMachine::Flavours favFlavour = (VendingMachine::Flavours) mprng(3);
+    printer.print(Printer::Kind::Student, id, Student::States::Start, (int)favFlavour, numPurchases);
 
     // create watcard and gift card
     WATCard::FWATCard watcard = cardOffice.create(id, 5);
@@ -12,7 +12,7 @@ Student::main(){
 
     // obtain location of a vending machine
     VendingMachine * machine = nameServer.getMachine(id);
-    printer.print(Printer::Kind::Student, id, Student::States::SelectMachine, machine.getId());
+    printer.print(Printer::Kind::Student, id, Student::States::SelectMachine, machine->getId());
 
     WATCard * card; // card used to make purchase
     unsigned int purchased = 0;
@@ -25,37 +25,37 @@ Student::main(){
                     card = giftcard;
                 }   // if
 
-                yeild(mprng(1, 10));    // yield before attept to buy
+                yield(mprng(1, 10));    // yield before attept to buy
 
                 // buy soda
-                machine->buy(favFlavor, *card);
+                machine->buy(favFlavour, *card);
                 if (giftcard.available()){ // used giftcard to buy soda
                     printer.print(Printer::Kind::Student, id, Student::States::GiftCardSoda,
-                        (int) favFlavor, card->getBalance());
+                        (int) favFlavour, card->getBalance());
                     delete giftcard();  // free giftcard future
                     giftcard.reset();   // reset so giftcard can only be used once
                 }  else if (watcard.available()){
                     printer.print(Printer::Kind::Student, id, Student::States::BoughtSoda,
-                        (int) favFlavor, card->getBalance());
+                        (int) favFlavour, card->getBalance());
                 }
                 purchased++;
-            } catch ( WATCardOffice::Lost event){
+            } catch ( WATCardOffice::Lost & event){
                 printer.print(Printer::Kind::Student, id, Student::States::WATCardLost);
                 watcard.reset();
                 watcard = cardOffice.create(id, 5);
-            } catch ( VendingMachine::Free event){
+            } catch ( VendingMachine::Free & event){
                 if (giftcard.available()){
                     printer.print(Printer::Kind::Student, id, Student::States::FreeSodaGC,
-                        (int) favFlavor, card->getBalance());
+                        (int) favFlavour, card->getBalance());
                 } else if (watcard.available()){
                     printer.print(Printer::Kind::Student, id, Student::States::FreeSodaWC,
-                        (int) favFlavor, card->getBalance());
+                        (int) favFlavour, card->getBalance());
                 }   // if
                 yield(4);   // watch advertisement
                 purchased++;
-            } catch ( VendingMachine::Funds event){ // only occurs for watcard
+            } catch ( VendingMachine::Funds & event){ // only occurs for watcard
                 watcard = cardOffice.transfer(id, machine->cost() + 5, card);   // transfer funds
-            } catch ( VendingMachine::Stock event){
+            } catch ( VendingMachine::Stock & event){
                 machine = nameServer.getMachine(id);    // get new machine
                 printer.print(Printer::Kind::Student, id, Student::States::SelectMachine, machine.getId());
             }   // try
