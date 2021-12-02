@@ -1,3 +1,5 @@
+#pragma once
+#include "MPRNG.h"
 #include "printer.h"
 #include "nameserver.h"
 #include "watcard.h"

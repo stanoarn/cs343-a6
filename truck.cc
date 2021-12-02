@@ -1,3 +1,5 @@
+#include "truck.h"
+
 extern MPRNG mprng;
 
 Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant, unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):

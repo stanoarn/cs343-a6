@@ -1,3 +1,5 @@
+#pragma once
+#include "vendingmachine.h"
 _Task NameServer {
 	void main();
   enum States : char {

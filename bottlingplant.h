@@ -1,5 +1,6 @@
 #pragma once
 #include "nameserver.h"
+#include "printer.h"
 #include "truck.h"
 _Task BottlingPlant {
 	void main();

@@ -1,3 +1,5 @@
+#include "nameserver.h"
+
 NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned int numStudents ):
 printer(prt), numVendingMachines(numVendingMachines), numStudents(numStudents), machines(new VendingMachine*[numVendingMachines])
 {}

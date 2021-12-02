@@ -1,3 +1,5 @@
+#include "vendingmachine.h"
+
 VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned int id, unsigned int sodaCost ):
 printer(prt), nameServer(nameServer), id(id), sodaCost(sodaCost)
 {};
