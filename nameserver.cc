@@ -12,7 +12,6 @@ void NameServer::main(){
         _Accept (VMregister){
             machines[machineIndex] = newMachine;
             printer.print(Printer::Kind::NameServer, Register, newMachine->getId());
-            bench.signalBlock();
         }   //accept VMregister
     }   //for
     machineIndex = 0;
@@ -32,7 +31,6 @@ void NameServer::main(){
 
 void NameServer::VMregister( VendingMachine * vendingmachine ){
     newMachine = vendingmachine;
-    bench.wait();
 }   // NameServer::VMregister
 
 VendingMachine * NameServer::getMachine( unsigned int id ){
