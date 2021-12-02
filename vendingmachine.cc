@@ -1,4 +1,7 @@
 #include "vendingmachine.h"
+#include "printer.h"
+#include "nameserver.h"
+#include "watcard.h"
 
 VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned int id, unsigned int sodaCost ):
 	printer(prt), nameServer(nameServer), id(id), sodaCost(sodaCost)
@@ -16,20 +19,20 @@ void VendingMachine::main(){
 					printer.print(Printer::Kind::Vending, ReloadDone);
 				} // Accept
 			} or _Accept (buy){
-				if (stock[flavour] == 0){
-				status = Stock;
-				} else if (card.getBalance() < sodaCost){
-				status = Funds;
+				if (stock[comFlavour] == 0){
+				  status = StockStatus;
+				} else if (watcard->getBalance() < sodaCost){
+          status = FundsStatus;
 				} else {
-				stock[flavour] = stock[flavour] - 1;
+          stock[comFlavour] = stock[comFlavour] - 1;
 				if (mprng(5 - 1) == 0){
 					printer.print(Printer::Kind::Vending, FreeSoda);
-					status = Free;
+					status = FreeStatus;
 				} else {
-					card.withdraw(sodaCost);
-					printer.print(Printer::Kind::Vending, SodaBought, flavour, stock[flavour]);
-					status = Succ;
-				} 	// if 
+					watcard->withdraw(sodaCost);
+					printer.print(Printer::Kind::Vending, SodaBought, comFlavour, stock[comFlavour]);
+					status = SuccStatus;
+				} 	// if
 				} 	// if
 				bench.signalBlock();
 			} 	// Accept
@@ -39,33 +42,37 @@ void VendingMachine::main(){
 	}	 //for
 }	// VendingMachine::main
 
-void buy( Flavours flavour, WATCard & card ){
+void VendingMachine::buy( Flavours flavour, WATCard & card ){
+  watcard = &card;
+  comFlavour = flavour;
 	bench.wait();
 	switch (status){
-		case Stock:
+		case StockStatus:
 		_Throw Stock();
 		break;
-		case Funds:
+		case FundsStatus:
 		_Throw Funds();
 		break;
-		case Free:
+		case FreeStatus:
 		_Throw Free();
 		break;
+    case SuccStatus:
+    break;
 	}	//switch
 }	// VendingMachine::buy
 
-unsigned int * inventory(){
+unsigned int * VendingMachine::inventory(){
 	return stock;
 }	// VendingMachine::inventory
 
-void restocked(){
+void VendingMachine::restocked(){
 	//do nothing
 }	// VendingMachine::restocked
 
-_Nomutex unsigned int cost() const{
+_Nomutex unsigned int VendingMachine::cost() const{
 	return sodaCost;
 }	// VendingMachine::cost
 
-_Nomutex unsigned int getId() const{
+_Nomutex unsigned int VendingMachine::getId() const{
 	return id;
 }	// VendingMachine::getId()

@@ -1,10 +1,14 @@
 #include "truck.h"
+#include "MPRNG.h"
+#include "printer.h"
+#include "bottlingplant.h"
+#include "nameserver.h"
 
 extern MPRNG mprng;
 
-Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant, 
+Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
     unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):
-    printer(prt), nameServer(nameServer), machines(nameServer.getMachineList()), 
+    printer(prt), nameServer(nameServer), machines(nameServer.getMachineList()),
     plant(plant), numVendingMachines(numVendingMachines), maxStockPerFlavour(maxStockPerFlavour)
     {}  // Truck::Truck
 
@@ -16,7 +20,7 @@ void Truck::main(){
             plant.getShipment(cargo);
             printer.print(Printer::Kind::Truck, Pickup, totalShipment());
             unsigned int currentMachineIndex = machineIndex;
-            for (; !empty ; ){
+            for (; !empty() ; ){
                 VendingMachine * machine = machines[currentMachineIndex];
                 restock(machine);
                 currentMachineIndex = (currentMachineIndex + 1) % numVendingMachines;
@@ -24,13 +28,13 @@ void Truck::main(){
             }   // for
             machineIndex = currentMachineIndex;
         }   // for
-    } catch(Shutdown &){
+    } catch(BottlingPlant::Shutdown &){
         //exit the main loop
         printer.print(Printer::Kind::Truck, Finished);
     }   // try
 }   // Truck::main
 
-void Truck::empty(){
+bool Truck::empty(){
     bool result = true;
     for (int i = 0; i < 4; i += 1){
         result = result && cargo[i];
@@ -61,7 +65,7 @@ void Truck::restock(VendingMachine * machine){
     }   // if
 }   // Truck::restock
 
-unsigned int totalShipment(){
+unsigned int Truck::totalShipment(){
     unsigned int result = 0;
     for (int i = 0; i < 4; i += 1) {
         result += cargo[i];

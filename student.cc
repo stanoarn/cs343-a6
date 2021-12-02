@@ -57,7 +57,7 @@ void Student::main(){
                 watcard = cardOffice.transfer(id, machine->cost() + 5, card);   // transfer funds
             } catch ( VendingMachine::Stock & event){
                 machine = nameServer.getMachine(id);    // get new machine
-                printer.print(Printer::Kind::Student, id, Student::States::SelectMachine, machine.getId());
+                printer.print(Printer::Kind::Student, id, Student::States::SelectMachine, machine->getId());
             }   // try
         }   // Select
     }   // for

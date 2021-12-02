@@ -20,11 +20,11 @@ _Task VendingMachine {
 		SodaBought = 'B',
 		Finished = 'F'
 	};
-	enum Status {Stock, Funds, Free, Succ};
-	Status status = Succ;
+	enum Status {StockStatus, FundsStatus, FreeStatus, SuccStatus};
+	Status status = SuccStatus;
 
 	void main();
-	
+
 	public:
 	enum Flavours { Cherry = 0, Soda = 1, Root = 2, Lime = 3 }; 				// flavours of soda (YOU DEFINE)
 	_Event Free {};						// free, advertisement
@@ -36,4 +36,8 @@ _Task VendingMachine {
 	void restocked();
 	_Nomutex unsigned int cost() const;
 	_Nomutex unsigned int getId() const;
+
+  private:
+  Flavours comFlavour = Cherry;
+  WATCard * watcard = nullptr;
 };

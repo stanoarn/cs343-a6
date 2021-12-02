@@ -1,6 +1,9 @@
 #pragma once
 
 _Task BottlingPlant;
+_Task NameServer;
+_Task VendingMachine;
+_Monitor Printer;
 
 _Task Truck {
 	enum States : char {
@@ -22,8 +25,8 @@ _Task Truck {
 	bool empty();
 	unsigned int totalShipment();
 	void restock(VendingMachine * machine);
-	
+
 	public:
-	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant, 
+	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
 		unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
 };
