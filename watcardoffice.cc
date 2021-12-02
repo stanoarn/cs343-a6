@@ -75,7 +75,7 @@ WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ):
 }	// WATCardOffice::~WATCardOffice
 
 WATCard::FWATCard create( unsigned int sid, unsigned int amount ){
-	WATCard * watcard = new WATCard();
+	WATCard * watcard = new WATCard();	// student must remember to free this memory
 	// obtain funding from bank
 	Job * job = new Job(sid, amount, watcard);
 	jobs.push(job);
