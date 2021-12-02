@@ -12,7 +12,8 @@ void VendingMachine::main(){
 	for (;/*condition to terminate*/;){
 		try {
 			_Accept(~VendingMachine){
-        printer.print(Printer::Kind::Vending, Finished);
+        printer.print(Printer::Kind::Vending, getId(), Finished);
+        break;
       }
 			or _Accept (inventory){ //accept inventory
 				printer.print(Printer::Kind::Vending, getId(), ReloadStart);
