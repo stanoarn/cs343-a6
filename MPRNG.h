@@ -1,7 +1,7 @@
 // Concurrent-Safe Pseudo Random-Number Generator : generate repeatable sequence of values that appear random.
 //
 // Interface :
-//   MPRNG(s) - set starting seed 
+//   MPRNG(s) - set starting seed
 //   seed() - read seed
 //   seed(s) - reset seed
 //   mprng() - generate random value in range [0,UINT_MAX]
