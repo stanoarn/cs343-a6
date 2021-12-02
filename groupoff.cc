@@ -1,5 +1,5 @@
 #include "groupoff.h"
-#include "printer.c"
+#include "printer.h"
 
 void Groupoff::main(){
     printer.print(Printer::Kind::Groupoff, Groupoff::States::Start);
@@ -46,7 +46,7 @@ Groupoff::~Groupoff(){
 }   // Groupoff::~Groupoff
 
 WATCard::FWATCard Groupoff::giftCard(){
-    WATCard::FWATCard giftcard = new WATCard::FWATCard();
+    WATCard::FWATCard giftcard = new WATCard::FWATCard();   // remember to have student free the future giftcard
     giftcards.push_back(giftcard);
     return giftcard;
 }   // Groupoff::giftCard
