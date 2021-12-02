@@ -13,9 +13,9 @@ _Task Student {
     Starting = 'S',
     SelectMachine = 'V',
     GiftCardSoda = 'G',
-    FreeSoda = 'a',
+    FreeSodaGC = 'a',
     BoughtSoda = 'B',
-    FreeSodaAd = 'A',
+    FreeSodaWC = 'A',
     WATCardLost = 'L',
     Finished = 'F'
 	};

@@ -1,5 +1,5 @@
 #include "groupoff.h"
-#include "printer.c"
+#include "printer.h"
 
 void Groupoff::main(){
     printer.print(Printer::Kind::Groupoff, Groupoff::States::Start);
