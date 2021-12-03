@@ -8,12 +8,13 @@ extern MPRNG mprng;
 
 Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
     unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):
-    printer(prt), nameServer(nameServer), machines(nameServer.getMachineList()),
+    printer(prt), nameServer(nameServer),
     plant(plant), numVendingMachines(numVendingMachines), maxStockPerFlavour(maxStockPerFlavour)
     {}  // Truck::Truck
 
 void Truck::main(){
     try {
+        machines = nameServer.getMachineList();
         printer.print(Printer::Kind::Truck, Start);
         for (;;) {
             yield(mprng(10) + 1);
@@ -35,11 +36,11 @@ void Truck::main(){
 }   // Truck::main
 
 bool Truck::empty(){
-    bool result = true;
+    bool notEmpty = false;
     for (int i = 0; i < 4; i += 1){
-        result = result && cargo[i];
+        notEmpty = notEmpty || cargo[i];
     }   // for
-    return result;
+    return !notEmpty;
 }   // Truck::empty
 
 void Truck::restock(VendingMachine * machine){
