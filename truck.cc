@@ -44,7 +44,7 @@ bool Truck::empty(){
 }   // Truck::empty
 
 void Truck::restock(VendingMachine * machine){
-    printer.print(Printer::Kind::Truck, DeliveryBegin, totalShipment());
+    printer.print(Printer::Kind::Truck, DeliveryBegin, machine->getId(), totalShipment());
     unsigned int * stock = machine->inventory();
     unsigned int notReplenished = 0;
     for (int i = 0; i < 4; i += 1){
@@ -56,9 +56,9 @@ void Truck::restock(VendingMachine * machine){
         cargo[i] = cargo[i] - canFill;
     }   // for
     if (notReplenished > 0){
-        printer.print(Printer::Kind::Truck, DeliveryFail, notReplenished);
+        printer.print(Printer::Kind::Truck, DeliveryFail, machine->getId(), notReplenished);
     } else {
-        printer.print(Printer::Kind::Truck, DeliveryEnd, totalShipment());
+        printer.print(Printer::Kind::Truck, DeliveryEnd, machine->getId(), totalShipment());
     }  // if
     if (mprng(100) == 0){
         printer.print(Printer::Kind::Truck, WaitForRepair);
