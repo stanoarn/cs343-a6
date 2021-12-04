@@ -61,7 +61,7 @@ int main(int argc, char * argv[]){
 
     // initialize printer
     Printer printer(configParms.numStudents, configParms.numVendingMachines, configParms.numCouriers);
-
+    
     // initialize finances
     Bank bank(configParms.numStudents);
     Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
