@@ -32,7 +32,6 @@ void Student::main(){
                 if (giftcard.available()){ // used giftcard to buy soda
                     printer.print(Printer::Kind::Student, id, Student::States::GiftCardSoda,
                         (int) favFlavour, card->getBalance());
-                    delete giftcard();  // free giftcard future
                     giftcard.reset();   // reset so giftcard can only be used once
                 }  else if (watcard.available()){
                     printer.print(Printer::Kind::Student, id, Student::States::BoughtSoda,
