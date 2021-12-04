@@ -22,7 +22,7 @@ void Groupoff::main(){
             // select random student to give card to
             unsigned int student = mprng(numStudents - i - 1);
             printer.print(Printer::Kind::Groupoff, Groupoff::States::Deposit, sodaCost);
-            giftcards[student]->delivery(card);
+            giftcards[student].delivery(card);
 
             // erase future from giftcards vector as the card has been sent out
             giftcards.erase(giftcards.begin() + student);
@@ -34,9 +34,6 @@ Groupoff::Groupoff( Printer & prt, unsigned int numStudents, unsigned int sodaCo
     printer(prt), numStudents(numStudents), sodaCost(sodaCost), groupoffDelay(groupoffDelay){}   // Groupoff::Groupoff
 
 Groupoff::~Groupoff(){
-    for (unsigned int i = 0; i < giftcards.size(); i++){
-        delete giftcards.at(i);
-    }
     for (unsigned int i = 0; i < cards.size(); i++){
         delete cards.at(i);
     }
@@ -44,7 +41,7 @@ Groupoff::~Groupoff(){
 }   // Groupoff::~Groupoff
 
 WATCard::FWATCard Groupoff::giftCard(){
-    WATCard::FWATCard * giftcard = new WATCard::FWATCard();   // remember to have student free the future giftcard
+    WATCard::FWATCard giftcard;
     giftcards.push_back(giftcard);
-    return *giftcard;
+    return giftcard;
 }   // Groupoff::giftCard
