@@ -59,12 +59,10 @@ int main(int argc, char * argv[]){
     uProcessor p[processors - 1]; // number of kernel threads
     if ( processors == 1 ) uThisProcessor().setPreemption( 0 ); // turn off time - slicing for reproducibility
 
-    // initialize concession service
+    // initialize printer
     Printer printer(configParms.numStudents, configParms.numVendingMachines, configParms.numCouriers);
-    Bank bank(configParms.numStudents);
-    Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
-    Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost, configParms.groupoffDelay);
-    WATCardOffice cardOffice(printer, bank, configParms.numCouriers);
+
+    // initialize production
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
     BottlingPlant plant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
@@ -74,6 +72,13 @@ int main(int argc, char * argv[]){
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
     }   // for
 
+    // initialize finances
+    Bank bank(configParms.numStudents);
+    Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
+    Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost, configParms.groupoffDelay);
+    WATCardOffice cardOffice(printer, bank, configParms.numCouriers);
+    
+    // initialize student
     Student * students[configParms.numStudents];
     for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);

@@ -26,7 +26,7 @@ _Task VendingMachine {
 	void main();
 
 	public:
-	enum Flavours { Cherry = 0, Soda = 1, Root = 2, Lime = 3 }; 				// flavours of soda (YOU DEFINE)
+	enum Flavours { Cherry, Soda, Root, Lime, COUNT }; 	// flavours of soda, COUNT is the number of flavours 
 	_Event Free {};						// free, advertisement
 	_Event Funds {};					// insufficient funds
 	_Event Stock {};					// flavour out of stock

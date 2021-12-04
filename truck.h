@@ -7,7 +7,7 @@ _Monitor Printer;
 
 _Task Truck {
 	enum States : char {
-		Starting = 'S',
+		Start = 'S',
 		Pickup = 'P',
 		DeliveryBegin = 'd',
 		DeliveryFail = 'U',
@@ -17,9 +17,10 @@ _Task Truck {
 	};
 	Printer & printer;
 	NameServer & nameServer;
-	VendingMachine ** machines;
 	BottlingPlant & plant;
-	unsigned int numVendingMachines, maxStockPerFlavour, cargo[4] = {0,0,0,0}, machineIndex = 0;
+	unsigned int numVendingMachines, maxStockPerFlavour;
+	unsigned * cargo, machineIndex = 0;
+	VendingMachine ** machines;
 
 	void main();
 	bool empty();
@@ -29,4 +30,5 @@ _Task Truck {
 	public:
 	Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
 		unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
+	~Truck();
 };

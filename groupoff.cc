@@ -8,7 +8,7 @@ void Groupoff::main(){
         _Accept(giftCard);
     }
 
-    for (unsigned int i = 0; i < numStudents; ){ // periodically create real WATCards for each student
+    for (unsigned int i = 0; i < numStudents; i++){ // periodically create real WATCards for each student
         _Accept(~Groupoff){ // loops until destructor is called or all student have a real card
             break;
         } _Else {

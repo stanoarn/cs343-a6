@@ -48,9 +48,9 @@ void Printer::flush(unsigned int location, Info newString){
             if (buffer[i].numValues == 0){
                 cout << buffer[i].state;
             } else if (buffer[i].numValues == 1){
-                cout << buffer[i].state << "," << to_string(buffer[i].value1);
+                cout << buffer[i].state << to_string(buffer[i].value1);
             } else if (buffer[i].numValues == 2){
-                cout << buffer[i].state << "," << to_string(buffer[i].value1) << "," << to_string(buffer[i].value2);
+                cout << buffer[i].state << to_string(buffer[i].value1) << "," << to_string(buffer[i].value2);
             }
             buffer[i].filled = false;     // flush old data
         }
