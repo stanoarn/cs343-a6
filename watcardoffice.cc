@@ -68,8 +68,15 @@ WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCourie
 
 WATCardOffice::~WATCardOffice(){
 	// delete the couriers
+  for (;!jobs.empty();){
+    Job * job = jobs.front();
+    jobs.pop();
+    delete job;
+  }
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
     _Accept(requestWork);
+	}	// for
+	for ( unsigned int i = 0; i < numCouriers; i++ ){
 		delete couriers[i];
 	}	// for
 	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::States::Finished );
