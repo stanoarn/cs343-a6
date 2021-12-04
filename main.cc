@@ -62,21 +62,20 @@ int main(int argc, char * argv[]){
     // initialize printer
     Printer printer(configParms.numStudents, configParms.numVendingMachines, configParms.numCouriers);
 
+    // initialize finances
+    Bank bank(configParms.numStudents);
+    Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
+    WATCardOffice cardOffice(printer, bank, configParms.numCouriers);
+    Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost, configParms.groupoffDelay);
+
     // initialize production
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
-    BottlingPlant plant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
-        configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
-
     VendingMachine * machines[configParms.numVendingMachines];
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
     }   // for
-
-    // initialize finances
-    Bank bank(configParms.numStudents);
-    Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
-    Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost, configParms.groupoffDelay);
-    WATCardOffice cardOffice(printer, bank, configParms.numCouriers);
+    BottlingPlant * plant = new BottlingPlant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
+        configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
     
     // initialize student
     Student * students[configParms.numStudents];
@@ -84,11 +83,13 @@ int main(int argc, char * argv[]){
         students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);
     }   // for
 
-    // delete students and vending machines
+    // delete students
     for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
         delete students[i];
     }   // for
 
+    // delete plant before vending machines
+    delete plant;
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
     }   // for
