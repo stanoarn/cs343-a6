@@ -18,7 +18,7 @@ Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
     }  // Truck::Truck
 
 Truck::~Truck(){
-    delete cargo;
+    delete[] cargo;
     printer.print(Printer::Kind::Truck, Finished);
 }
 
@@ -46,7 +46,8 @@ void Truck::main(){
             if (currentMachineIndex == machineIndex) break; // check if delivered to all machines
         }   // for
         machineIndex = currentMachineIndex;
-    }   // for
+    }   // fortry
+    _Accept(~Truck);
 }   // Truck::main
 
 bool Truck::empty(){

@@ -64,7 +64,7 @@ int main(int argc, char * argv[]){
 
     // initialize production
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
-    BottlingPlant plant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
+    BottlingPlant * plant = new BottlingPlant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
 
     VendingMachine * machines[configParms.numVendingMachines];
@@ -89,6 +89,7 @@ int main(int argc, char * argv[]){
         delete students[i];
     }   // for
 
+    delete plant;
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
     }   // for
