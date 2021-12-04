@@ -30,9 +30,7 @@ void Student::main(){
                 yield(mprng(1, 10));    // yield before attept to buy
 
                 // buy soda
-                std::cout << "I am now going to buy something, my name is " << id << std::endl;
                 machine->buy(favFlavour, *card);
-                std::cout << "I have now bought something, my name is " << id << std::endl;
                 if (giftcard.available()){ // used giftcard to buy soda
                     printer.print(Printer::Kind::Student, id, Student::States::GiftCardSoda,
                         (int) favFlavour, card->getBalance());
