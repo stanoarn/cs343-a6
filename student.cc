@@ -1,8 +1,6 @@
 #include "student.h"
 #include "printer.h"
 
-#include <iostream>
-
 void Student::main(){
     unsigned int numPurchases = mprng(1, maxPurchases);
     VendingMachine::Flavours favFlavour = (VendingMachine::Flavours) mprng(3);
