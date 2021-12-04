@@ -71,10 +71,10 @@ void Truck::restock(VendingMachine * machine){
     }   // for
 
     if (notReplenished > 0){    // uncessfully filled vending machine
-        printer.print(Printer::Kind::Truck, DeliveryFail, notReplenished);
+        printer.print(Printer::Kind::Truck, DeliveryFail, machine->getId(), notReplenished);
     }  // if
 
-    printer.print(Printer::Kind::Truck, DeliveryEnd, totalShipment());  // finised delivery
+    printer.print(Printer::Kind::Truck, DeliveryEnd, machine->getId(), totalShipment());  // finised delivery
 
     if (mprng(100) == 0){   // change of flat tire
         printer.print(Printer::Kind::Truck, WaitForRepair);
