@@ -69,7 +69,7 @@ WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCourie
 WATCardOffice::~WATCardOffice(){
 	// delete the couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
-		couriers.push_back( new Courier( printer, bank, *this, i ) );
+		delete couriers[i];
 	}	// for
 	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::States::Finished );
 }	// WATCardOffice::~WATCardOffice
