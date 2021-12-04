@@ -70,6 +70,12 @@ int main(int argc, char * argv[]){
 
     // initialize production
     NameServer nameServer(printer, configParms.numVendingMachines, configParms.numStudents);
+<<<<<<< HEAD
+=======
+    BottlingPlant * plant = new BottlingPlant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
+        configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
+
+>>>>>>> 80f6f4520dfc48f033bcccee4ac4bed7c7d9bd82
     VendingMachine * machines[configParms.numVendingMachines];
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         machines[i] = new VendingMachine(printer, nameServer, i, configParms.sodaCost);
@@ -88,7 +94,10 @@ int main(int argc, char * argv[]){
         delete students[i];
     }   // for
 
+<<<<<<< HEAD
     // delete plant before vending machines
+=======
+>>>>>>> 80f6f4520dfc48f033bcccee4ac4bed7c7d9bd82
     delete plant;
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
