@@ -14,7 +14,7 @@ Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
         cargo = new unsigned int[VendingMachine::Flavours::COUNT];
         for (unsigned int i = 0; i < VendingMachine::Flavours::COUNT; i++){
             cargo[i] = 0;
-        }  
+        }
     }  // Truck::Truck
 
 Truck::~Truck(){
@@ -36,7 +36,7 @@ void Truck::main(){
         } catch (BottlingPlant::Shutdown &){
             //exit the main loop
             break;
-        }   // 
+        }   //
 
         unsigned int currentMachineIndex = machineIndex;
         while (!empty()){
@@ -75,6 +75,8 @@ void Truck::restock(VendingMachine * machine){
     }  // if
 
     printer.print(Printer::Kind::Truck, DeliveryEnd, machine->getId(), totalShipment());  // finised delivery
+
+    machine->restocked();
 
     if (mprng(100) == 0){   // change of flat tire
         printer.print(Printer::Kind::Truck, WaitForRepair);
