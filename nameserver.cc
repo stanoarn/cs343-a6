@@ -1,11 +1,14 @@
 #include "nameserver.h"
 #include "printer.h"
-#include <iostream>
 
 NameServer::NameServer( Printer & prt, unsigned int numVendingMachines, unsigned int numStudents ):
     printer(prt), numVendingMachines(numVendingMachines), numStudents(numStudents),
     machines(new VendingMachine*[numVendingMachines])
     {}  // NameServer::NameServer
+
+NameServer::~NameServer(){
+    delete[] machines;
+}
 
 void NameServer::main(){
     printer.print(Printer::Kind::NameServer, Start);
