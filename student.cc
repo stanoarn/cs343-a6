@@ -73,6 +73,7 @@ void Student::main(){
         card = giftcard;
         delete card;
     }
+    _Accept(~Student);
 }   // Student::main
 
 Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOffice, Groupoff & groupoff,
