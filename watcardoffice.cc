@@ -8,32 +8,32 @@ void WATCardOffice::Courier::main(){
 	printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::Start);
 
 	for ( ;; ){
-		_Accept ( ~Courier ) {
-			break;
-		} _Else {
-			WATCardOffice::Job * job = office.requestWork();
-			if (job == NULL) break;		// no jobs available
+    WATCardOffice::Job * job = office.requestWork();
+    if (job == NULL) {
+        _Accept ( ~Courier ) {
+          break;
+      }
+    }
 
-			// get money from bank
-			printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferStart,
-				job->sid, job->amount);
-			bank.withdraw(job->sid, job->amount);
+    // get money from bank
+    printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferStart,
+      job->sid, job->amount);
+    bank.withdraw(job->sid, job->amount);
 
-			// update WATCard
-				printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete,
-					job->sid, job->amount);
-			job->watcard->deposit(job->amount);
+    // update WATCard
+      printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete,
+        job->sid, job->amount);
+    job->watcard->deposit(job->amount);
 
-			if (mprng(5) == 0){	// 1/6 change that watcard is lost
-				printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::WATCardLost, job->sid);
-				job->result.exception(new WATCardOffice::Lost());
-				delete job->watcard;
-			} else {	// card is not lost
-				job->result.delivery(job->watcard);
-			}	// if
+    if (mprng(5) == 0){	// 1/6 change that watcard is lost
+      printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::WATCardLost, job->sid);
+      job->result.exception(new WATCardOffice::Lost());
+      delete job->watcard;
+    } else {	// card is not lost
+      job->result.delivery(job->watcard);
+    }	// if
 
-			delete job;	// deallocate job from heap
-		}	// Accept
+    delete job;	// deallocate job from heap
 	}
 }   // WATCardOffice::Courier::main
 
@@ -69,6 +69,7 @@ WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCourie
 WATCardOffice::~WATCardOffice(){
 	// delete the couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
+    _Accept(requestWork);
 		delete couriers[i];
 	}	// for
 	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::States::Finished );

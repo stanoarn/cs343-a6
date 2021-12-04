@@ -65,7 +65,7 @@ int main(int argc, char * argv[]){
     // initialize finances
     Bank bank(configParms.numStudents);
     Parent parent(printer, bank, configParms.numStudents, configParms.parentalDelay);
-    WATCardOffice cardOffice(printer, bank, configParms.numCouriers);
+    WATCardOffice *cardOffice = new WATCardOffice(printer, bank, configParms.numCouriers);
     Groupoff groupoff(printer, configParms.numStudents, configParms.sodaCost, configParms.groupoffDelay);
 
     // initialize production
@@ -76,11 +76,11 @@ int main(int argc, char * argv[]){
     }   // for
     BottlingPlant * plant = new BottlingPlant(printer, nameServer, configParms.numVendingMachines, configParms.maxShippedPerFlavour,
         configParms.maxStockPerFlavour, configParms.timeBetweenShipments);
-    
+
     // initialize student
     Student * students[configParms.numStudents];
     for (unsigned int i = 0; i < configParms.numStudents; i++){  // create voters
-        students[i] = new Student(printer, nameServer, cardOffice, groupoff, i, configParms.maxPurchases);
+        students[i] = new Student(printer, nameServer, *cardOffice, groupoff, i, configParms.maxPurchases);
     }   // for
 
     // delete students
@@ -90,6 +90,7 @@ int main(int argc, char * argv[]){
 
     // delete plant before vending machines
     delete plant;
+    delete cardOffice;
     for (unsigned int i = 0; i < configParms.numVendingMachines; i++){  // create voters
         delete machines[i];
     }   // for
