@@ -2,38 +2,51 @@
 
 BottlingPlant::BottlingPlant( Printer & prt, NameServer & nameServer, unsigned int numVendingMachines,
     unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour, unsigned int timeBetweenShipments ):
-    printer(prt), nameServer(nameServer), truck(Truck(prt, nameServer, *this, numVendingMachines, maxStockPerFlavour)),
+    printer(prt), nameServer(nameServer),
     numVendingMachines(numVendingMachines), maxShippedPerFlavour(maxShippedPerFlavour),
     maxStockPerFlavour(maxStockPerFlavour), timeBetweenShipments(timeBetweenShipments)
-    {}    // BottlingPlant::BottlingPlant
+    {
+        production = new unsigned int[VendingMachine::Flavours::COUNT];
+    }    // BottlingPlant::BottlingPlant
+
+BottlingPlant::~BottlingPlant(){
+    delete production;
+    printer.print(Printer::Kind::BottlingPlant, Finished);
+}
 
 void BottlingPlant::main(){
     printer.print(Printer::Kind::BottlingPlant, Start);
-    yield(timeBetweenShipments);//pruduction
-    for (;!shutdown;) {
-        _Accept(getShipment) {
-            _Accept (~BottlingPlant) {
-                shutdown = true;
-                bench.signalBlock();
-            }
-            _Else {
-                printer.print(Printer::Kind::BottlingPlant, Generating, 4*maxShippedPerFlavour);
-                for (int i = 0; i < 4; i += 1){
-                    truckCargo[i] = maxShippedPerFlavour;
-                }   // for
-                printer.print(Printer::Kind::BottlingPlant, Pickup);
-                bench.signalBlock();
-                yield(timeBetweenShipments);//pruduction
-            }
+
+    Truck truck(printer, nameServer, *this, numVendingMachines, maxStockPerFlavour); // create truck;
+
+    while (!shutdown) {
+        _Accept (~BottlingPlant) {
+            shutdown = true;
+            _Accept(getShipment);   // wait for truck to finish
+            break;
+        } _Else {
+            // production run
+            int total = 0;
+            for (int i = 0; i < 4; i += 1){
+                production[i] = mprng(maxShippedPerFlavour);
+                total += production[i];
+            }   // for
+            printer.print(Printer::Kind::BottlingPlant, Generating, total);
+            yield(timeBetweenShipments);    // yield between shipments, not including first production
+
+            _Accept(getShipment);   // wait for truck to pickup shipment before starting next production run
+            printer.print(Printer::Kind::BottlingPlant, Pickup);
         }   // Accept
     }
-    printer.print(Printer::Kind::BottlingPlant, Finished);
 }   // BottlingPlant::main
 
 void BottlingPlant::getShipment( unsigned int cargo[] ){
-    truckCargo = cargo;
-    bench.wait();
     if (shutdown) {
         _Throw Shutdown();
     }   // if
+
+    // copy production into cargo array
+    for (unsigned int i = 0; i < VendingMachine::Flavours::COUNT; i++){
+        cargo[i] = production[i];
+    }
 }   // BottlingPlant::getShipment

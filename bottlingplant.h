@@ -12,18 +12,17 @@ _Task BottlingPlant {
 	};
 	Printer & printer;
 	NameServer & nameServer;
-	Truck truck;
-	bool shutdown = false;
-  uCondition bench;
-	unsigned int numVendingMachines, maxShippedPerFlavour, maxStockPerFlavour;
-	unsigned int timeBetweenShipments, * truckCargo = nullptr;
+	unsigned int numVendingMachines, maxShippedPerFlavour, maxStockPerFlavour, timeBetweenShipments;
+	bool shutdown = false;	// flag variable to know when to throu Shutdown
+	unsigned int * production;
 
 	void main();
 	
 	public:
 	_Event Shutdown {};					// shutdown plant
 	BottlingPlant( Printer & prt, NameServer & nameServer, unsigned int numVendingMachines,
-				unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
-				unsigned int timeBetweenShipments );
+		unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
+		unsigned int timeBetweenShipments );
+	~BottlingPlant();
 	void getShipment( unsigned int cargo[] );
 };

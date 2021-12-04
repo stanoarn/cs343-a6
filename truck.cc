@@ -10,29 +10,43 @@ Truck::Truck( Printer & prt, NameServer & nameServer, BottlingPlant & plant,
     unsigned int numVendingMachines, unsigned int maxStockPerFlavour ):
     printer(prt), nameServer(nameServer),
     plant(plant), numVendingMachines(numVendingMachines), maxStockPerFlavour(maxStockPerFlavour)
-    {}  // Truck::Truck
+    {
+        cargo = new unsigned int[VendingMachine::Flavours::COUNT];
+        for (unsigned int i = 0; i < VendingMachine::Flavours::COUNT; i++){
+            cargo[i] = 0;
+        }  
+    }  // Truck::Truck
+
+Truck::~Truck(){
+    delete cargo;
+    printer.print(Printer::Kind::Truck, Finished);
+}
 
 void Truck::main(){
-    try {
-        machines = nameServer.getMachineList();
-        printer.print(Printer::Kind::Truck, Start);
-        for (;;) {
-            yield(mprng(10) + 1);
+    printer.print(Printer::Kind::Truck, Start);
+    machines = nameServer.getMachineList(); // get list of vending machines
+
+    for (;;) {
+        yield(mprng(1, 10));   // yield to get coffee from Tim Hortons
+
+        // obtain new shipment
+        try {
             plant.getShipment(cargo);
             printer.print(Printer::Kind::Truck, Pickup, totalShipment());
-            unsigned int currentMachineIndex = machineIndex;
-            for (; !empty() ; ){
-                VendingMachine * machine = machines[currentMachineIndex];
-                restock(machine);
-                currentMachineIndex = (currentMachineIndex + 1) % numVendingMachines;
-                if (currentMachineIndex == machineIndex) break;
-            }   // for
-            machineIndex = currentMachineIndex;
+        } catch (BottlingPlant::Shutdown &){
+            //exit the main loop
+            break;
+        }   // 
+
+        unsigned int currentMachineIndex = machineIndex;
+        while (!empty()){
+            VendingMachine * machine = machines[currentMachineIndex];
+            restock(machine);
+            currentMachineIndex = (currentMachineIndex + 1) % numVendingMachines;
+            if (currentMachineIndex == machineIndex) break; // check if delivered to all machines
         }   // for
-    } catch(BottlingPlant::Shutdown &){
-        //exit the main loop
-        printer.print(Printer::Kind::Truck, Finished);
-    }   // try
+        machineIndex = currentMachineIndex;
+    }   // fortry
 }   // Truck::main
 
 bool Truck::empty(){
@@ -47,7 +61,7 @@ void Truck::restock(VendingMachine * machine){
     printer.print(Printer::Kind::Truck, DeliveryBegin, totalShipment());
     unsigned int * stock = machine->inventory();
     unsigned int notReplenished = 0;
-    for (int i = 0; i < 4; i += 1){
+    for (int i = 0; i < VendingMachine::Flavours::COUNT; i++){
         unsigned int spaceLeft = maxStockPerFlavour - stock[i];
         unsigned int availableBottles = cargo[i];
         unsigned int canFill = spaceLeft < availableBottles ? spaceLeft : availableBottles;
@@ -55,12 +69,14 @@ void Truck::restock(VendingMachine * machine){
         stock[i] = stock[i] + canFill;
         cargo[i] = cargo[i] - canFill;
     }   // for
-    if (notReplenished > 0){
+
+    if (notReplenished > 0){    // uncessfully filled vending machine
         printer.print(Printer::Kind::Truck, DeliveryFail, notReplenished);
-    } else {
-        printer.print(Printer::Kind::Truck, DeliveryEnd, totalShipment());
     }  // if
-    if (mprng(100) == 0){
+
+    printer.print(Printer::Kind::Truck, DeliveryEnd, totalShipment());  // finised delivery
+
+    if (mprng(100) == 0){   // change of flat tire
         printer.print(Printer::Kind::Truck, WaitForRepair);
         yield(10);
     }   // if
