@@ -18,12 +18,8 @@ void BottlingPlant::main(){
     printer.print(Printer::Kind::BottlingPlant, Start);
 
     truck = new Truck(printer, nameServer, *this, numVendingMachines, maxStockPerFlavour); // create truck;
-<<<<<<< HEAD
-=======
-
     // production run
     yield(timeBetweenShipments);    // yield between shipments, not including first production
->>>>>>> 4c624b6 (fix plant termination)
 
     while (!shutdown) {
         _Accept (~BottlingPlant) {
