@@ -63,16 +63,15 @@ void Student::main(){
     }   // for
 
     // free dynamically allocated memory
-    _Select (watcard){
+    if (giftcard.available()){
+        card = giftcard;
+        delete card;
+    } else if (watcard.available()){
         try {
             card = watcard();
             delete card;
         } catch (WATCardOffice::Lost &){}
-    }
-    _Select(giftcard){
-        card = giftcard;
-        delete card;
-    }
+    }   // if
     _Accept(~Student);
 }   // Student::main
 
