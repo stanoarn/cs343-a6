@@ -20,9 +20,9 @@ void Student::main(){
         _Select(watcard || giftcard){   // if either card is ready to use
             try {
                 if (giftcard.available()){  // use gift card first, get giftcard
-                    card = watcard();
-                } else if (watcard.available()){    // get watcard
                     card = giftcard();
+                } else if (watcard.available()){    // get watcard
+                    card = watcard();
                 }   // if
 
                 yield(mprng(1, 10));    // yield before attept to buy
