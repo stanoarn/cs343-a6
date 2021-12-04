@@ -1,6 +1,8 @@
 #include "student.h"
 #include "printer.h"
 
+#include <iostream>
+
 void Student::main(){
     unsigned int numPurchases = mprng(1, maxPurchases);
     VendingMachine::Flavours favFlavour = (VendingMachine::Flavours) mprng(3);
@@ -22,13 +24,15 @@ void Student::main(){
                 if (giftcard.available()){  // use gift card first, get giftcard
                     card = watcard();
                 } else if (watcard.available()){    // get watcard
-                    card = giftcard;
+                    card = giftcard();
                 }   // if
 
                 yield(mprng(1, 10));    // yield before attept to buy
 
                 // buy soda
+                std::cout << "I am now going to buy something, my name is " << id << std::endl;
                 machine->buy(favFlavour, *card);
+                std::cout << "I have now bought something, my name is " << id << std::endl;
                 if (giftcard.available()){ // used giftcard to buy soda
                     printer.print(Printer::Kind::Student, id, Student::States::GiftCardSoda,
                         (int) favFlavour, card->getBalance());
