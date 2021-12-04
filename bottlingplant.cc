@@ -10,6 +10,7 @@ BottlingPlant::BottlingPlant( Printer & prt, NameServer & nameServer, unsigned i
     }    // BottlingPlant::BottlingPlant
 
 BottlingPlant::~BottlingPlant(){
+    delete truck;
     delete production;
     printer.print(Printer::Kind::BottlingPlant, Finished);
 }
@@ -17,7 +18,7 @@ BottlingPlant::~BottlingPlant(){
 void BottlingPlant::main(){
     printer.print(Printer::Kind::BottlingPlant, Start);
 
-    Truck truck(printer, nameServer, *this, numVendingMachines, maxStockPerFlavour); // create truck;
+    truck = new Truck(printer, nameServer, *this, numVendingMachines, maxStockPerFlavour); // create truck;
 
     while (!shutdown) {
         _Accept (~BottlingPlant) {

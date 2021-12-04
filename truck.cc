@@ -36,7 +36,7 @@ void Truck::main(){
         } catch (BottlingPlant::Shutdown &){
             //exit the main loop
             break;
-        }   //
+        }   // try
 
         unsigned int currentMachineIndex = machineIndex;
         while (!empty()){
@@ -46,7 +46,7 @@ void Truck::main(){
             if (currentMachineIndex == machineIndex) break; // check if delivered to all machines
         }   // for
         machineIndex = currentMachineIndex;
-    }   // fortry
+    }   // for
 }   // Truck::main
 
 bool Truck::empty(){

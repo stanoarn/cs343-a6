@@ -15,6 +15,7 @@ _Task BottlingPlant {
 	unsigned int numVendingMachines, maxShippedPerFlavour, maxStockPerFlavour, timeBetweenShipments;
 	bool shutdown = false;	// flag variable to know when to throu Shutdown
 	unsigned int * production;
+	Truck * truck;
 
 	void main();
 	

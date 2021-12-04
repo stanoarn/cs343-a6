@@ -3,8 +3,6 @@
 #include "nameserver.h"
 #include "watcard.h"
 
-#include <iostream>
-
 VendingMachine::VendingMachine( Printer & prt, NameServer & nameServer, unsigned int id, unsigned int sodaCost ):
 	printer(prt), nameServer(nameServer), id(id), sodaCost(sodaCost)
 	{
@@ -35,7 +33,6 @@ void VendingMachine::main(){
 						status = FreeStatus;
 					} else {
 						watcard->withdraw(sodaCost);
-            std::cout << "thing" << std::endl;
 						printer.print(Printer::Kind::Vending, getId(), SodaBought, comFlavour, stock[comFlavour]);
 						status = SuccStatus;
 					} 	// if
