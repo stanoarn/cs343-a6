@@ -47,9 +47,10 @@ _Task WATCardOffice {
 	};
 	Printer & printer;
 	Bank & bank;
-	vector<Courier *> couriers;
-	queue<Job *> jobs;
 	unsigned int numCouriers;
+	Courier ** couriers;
+	queue<Job *> jobs;
+	
 	void main();
 
 	public:

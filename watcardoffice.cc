@@ -21,7 +21,7 @@ void WATCardOffice::Courier::main(){
     bank.withdraw(job->sid, job->amount);
 
     // update WATCard
-      printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete,
+    printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::TransferComplete,
         job->sid, job->amount);
     job->watcard->deposit(job->amount);
 
@@ -59,26 +59,30 @@ void WATCardOffice::main(){
 }	// WATCardOffice::main
 
 WATCardOffice::WATCardOffice( Printer & prt, Bank & bank, unsigned int numCouriers ):
-	printer(prt), bank(bank), numCouriers(numCouriers){
-	// create the \ couriers
+	printer(prt), bank(bank), numCouriers(numCouriers), couriers(new Courier*[numCouriers]){
+	// create the couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
-		couriers.push_back( new Courier( printer, bank, *this, i ) );
+		couriers[i] = new Courier( printer, bank, *this, i );
 	}	// for
 }	// WATCardOffice::WATCardOffice
 
 WATCardOffice::~WATCardOffice(){
-	// delete the couriers
-  for (;!jobs.empty();){
-    Job * job = jobs.front();
-    jobs.pop();
-    delete job;
-  }
+	// delete left over jobs if any
+	for (;!jobs.empty();){
+		Job * job = jobs.front();
+		jobs.pop();
+		delete job;
+	}
+
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
-    _Accept(requestWork);
+    	_Accept(requestWork);
 	}	// for
+	// delete the couriers
 	for ( unsigned int i = 0; i < numCouriers; i++ ){
 		delete couriers[i];
 	}	// for
+	delete couriers;
+	
 	printer.print( Printer::Kind::WATCardOffice, WATCardOffice::States::Finished );
 }	// WATCardOffice::~WATCardOffice
 
