@@ -47,7 +47,7 @@ int main(int argc, char * argv[]){
           default: throw 1;
 		} // switch
 	} catch( ... ) {
-		cout << "Usage: vote [voters(>0)|’d’[group(>0)|’d’[votes(>0)|’d’[seed(>0)|’d’[processors(>0)|’d’]]]]]" << endl;
+		cout << "Usage: soda [config-file|’d’[seed(>0)|’d’[processors(>0)|’d’]]]" << endl;
 		exit( 1 );
 	} // try
 

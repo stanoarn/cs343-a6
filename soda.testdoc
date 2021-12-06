@@ -119,7 +119,10 @@ D0,2                            P5              F
 ***********************
 
 Explanation:
-
+1. Students favourite soda and numbers of purchases are printed with S
+2. Number of bottles purchased and flavour are consistent with numbers above.
+3. New vending machine is selected if vending machine doesn't have the flavour wanted
+4. Students finish after purchases all the bottles they need
 _______________________________________________________________________________
 Command:
 
