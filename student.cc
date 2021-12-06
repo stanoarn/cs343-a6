@@ -60,6 +60,7 @@ void Student::main(){
             }   // try
         }   // Select
     }   // for
+    printer.print(Printer::Kind::Student, id, Student::States::Finished);
 
     // free dynamically allocated memory
     if (watcard.available()){
@@ -74,6 +75,4 @@ Student::Student( Printer & prt, NameServer & nameServer, WATCardOffice & cardOf
     unsigned int id, unsigned int maxPurchases ): printer(prt), nameServer(nameServer), cardOffice(cardOffice),
     groupoff(groupoff), id(id), maxPurchases(maxPurchases) {}   // Student::Student
 
-Student::~Student(){
-    printer.print(Printer::Kind::Student, id, Student::States::Finished);
-}   // Student::~Student
+Student::~Student(){}   // Student::~Student
