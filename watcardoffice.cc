@@ -26,11 +26,11 @@ void WATCardOffice::Courier::main(){
     job->watcard->deposit(job->amount);
 
     if (mprng(5) == 0){	// 1/6 change that watcard is lost
-      printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::WATCardLost, job->sid);
-      job->result.exception(new WATCardOffice::Lost());
-      delete job->watcard;
+		printer.print(Printer::Kind::Courier, cid, WATCardOffice::Courier::States::WATCardLost, job->sid);
+		job->result.exception(new WATCardOffice::Lost());
+		delete job->watcard;
     } else {	// card is not lost
-      job->result.delivery(job->watcard);
+      	job->result.delivery(job->watcard);
     }	// if
 
     delete job;	// deallocate job from heap
