@@ -76,7 +76,6 @@ _______________________________________________________________________________
 Command:
 ./soda soda.config 44
 
-
 Output:
 Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0
 ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
@@ -123,31 +122,171 @@ Explanation:
 2. Number of bottles purchased and flavour are consistent with numbers above.
 3. New vending machine is selected if vending machine doesn't have the flavour wanted
 4. Students finish after purchases all the bottles they need
+5. Students buy using giftcard first if they have it available
 _______________________________________________________________________________
 Command:
-
+./soda soda.config 12
 
 Output:
-
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+... 
+                W                               B3,1            B3,2                    t1,7
+                                                                                        T1,7
+D1,2            C1,5                                    L                               L1
+                W                                                                       t1,5
+D0,1            T0,7            P12     G12                                             T1,5
+                                d1,12
+                                U1,2
+                W               D1,6                                    r               t0,7
+                                d2,6
+                                U2,8
+                                D2,2    P                               R       r
+                                d0,2
+                                U0,4
+D1,2                            D0,2                            r               R
+D0,2                                                    B3,3    R               B3,2
+D0,2                                                    A3,3                    A
+                                        G9              F                               T0,7
+                                P9                                                      L0
+                                d1,9
+                C0,5            D1,7            L                       r
+                                d2,7
+                                U2,5
+D1,2            W               D2,2    P                               R       r       t0,5
+                                d0,2
+                                U0,4
+                                D0,2                            r               R
+D0,3                            P6      G6                      R
+                                d1,6
+D0,3                            D1,6                                    r
+                                d2,6
+                                U2,2
+                                D2,3    P                               R       r       T0,5
+                                d0,3
+                                U0,3
+D1,3                            D0,2                            r               R
+                                                                R
+                                        G7      B3,3            B3,1
+                                P7              F
+                                d1,7
+...
+***********************
 
 Explanation:
-
+1. Student handles lost WATCard correctly. Creates and waits new WATCard.
+2. Courier throws exception LOST to notify student of lost watcard.
 _______________________________________________________________________________
 Command:
-
+./soda soda.config 12
 
 Output:
-
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+S       S       S       S                                                               S
+                        R0                                      S2
+D1,2                    R1                                              S2
+                C0,5    R2      S       S       S3,4    S3,8                    S2
+D1,2            C1,5    N0,0                    V0
+D1,3    D2      W       N1,1                            V1                              t0,5
+D0,3
+D1,3                    N0,2    P4      G4
+                                d0,4
+                                U0,16
+        D2                      D0,0            V2              r
+D1,2    F               N0,0            P       V0              R
+                                P11     G11
+D1,1                    N1,1    d1,11
+                                U1,9
+D1,1                            D1,0    P       G3,0    V1      B3,0    r
+                                                                        R
+                                P3      G3              a3,2            A
+                                d2,3
+                                U2,17
+D1,1                            D2,0                                            r
+...
+***********************
 
 Explanation:
+1. Plant only produces sodas after the previous batch has been picked up by truck.
+2. Truck picks up all the sodas that were created in the production cycle.
+3. Correct output if truck unsuccessfully filled machine.
+4. Rotates through the vending machines when making deliveries.
+5. Correct output for start and end reloading of vending machines.
 
-_______________________________________________________________________________
+*******************************************************************************
+config file used in the following tests:
+SodaCost				2	# Manufacturer Suggested Retail Price (MSRP) per bottle
+NumStudents				2	# number of students to create
+MaxPurchases			8	# maximum number of bottles a student purchases
+NumVendingMachines		3	# number of vending machines
+MaxStockPerFlavour		5	# maximum number of bottles of each flavour in a vending machine
+MaxShippedPerFlavour	3	# maximum number of bottles of each flavour generated by the bottling
+							#    plant per production run
+TimeBetweenShipments	3	# length of time between shipment pickup
+GroupoffDelay			10	# length of time between initializing gift cards
+ParentalDelay			5	# length of time between deposits of funds
+NumCouriers				3	# maximum number of couriers in the pool
+*******************************************************************************
 Command:
-
+./soda soda.config 44
 
 Output:
-
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0   Cour1   Cour2
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+S       S       S       S                                                               S       S       S
+                        R0                                      S2
+D0,3                    R1                                              S2
+                C0,5    R2      S       S       S1,6    S0,2                    S2
+D0,1            C1,5    N0,0                    V0
+                W       N1,1                                                            t0,5
+D1,1    D2      W                                       V1                                      t1,5
+D1,3                    N1,2    P6      G6
+                                d0,6
+                                U0,14
+D0,2                            D0,0                    V2      r                       T0,5
+                                        P                       R
+        D2                                                      B1,2
+D0,2    F               N1,0    P7      G7      G1,3    V0
+                                d1,7
+                                U1,13
+D0,3                            D1,0            B1,1            B1,1    r
+D0,1                                    P               a0,2    A       R
+                                P9      G9
+                                d2,9
+                                U2,11
+                                D2,0                                            r
+D0,2            T0,7                    P                                       R
+                W                                       G0,0    B0,0                                    t0,7
+D0,1                            P7      G7              F
+                                d0,7
+                                U0,11
+D1,2                            D0,0                            r
+                                        P                       R                               T1,5    T0,7
+D0,2                            P9      G9      B1,6            B1,3
+                                d1,9
+                                U1,4
+                                D1,0                                    r
+D1,3                                    P       B1,4            B1,2    R
+D1,1                                    G3      B1,2            B1,1
+D0,2                            P3                              A
+                                d2,3
+                                U2,8
+                                D2,0            A1,2                            r
+D0,1                            X       P       F                               R
+D1,3
+D0,2                            F       F
+D0,1
+D0,3                                                                                    F
+D1,2            F                                               F                               F       F
+D1,1                    F                                               F       F
+D0,1
+D0,2
+F
+***********************
 
 Explanation:
-
+1. Jobs are evenly distributed when there are multiple couriers.
+2. Tested case with no lost WATCards.
+3. Correct output from machines and students when student gets a free soda after watching advertisments
 _______________________________________________________________________________
