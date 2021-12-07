@@ -105,7 +105,7 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 }	// WATCardOffice::transfer
 
 WATCardOffice::Job * WATCardOffice::requestWork(){
-	if ( jobs.empty() ) return NULL;															// If null is returned that means everything is tearing down.
+	if ( jobs.empty() ) return NULL;	// If null is returned that means everything is tearing down.
 	Job * job = jobs.front();
 	jobs.pop();
 
