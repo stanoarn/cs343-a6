@@ -28,7 +28,7 @@ void Groupoff::main(){
             giftcards.erase(giftcards.begin() + student);
         }   // Accept
     }
-            printer.print(Printer::Kind::Groupoff, Groupoff::States::Finished);
+    printer.print(Printer::Kind::Groupoff, Groupoff::States::Finished);
 }   // Groupoff::main
 
 Groupoff::Groupoff( Printer & prt, unsigned int numStudents, unsigned int sodaCost, unsigned int groupoffDelay ):
