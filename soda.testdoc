@@ -290,3 +290,22 @@ Explanation:
 2. Tested case with no lost WATCards.
 3. Correct output from machines and students when student gets a free soda after watching advertisments
 _______________________________________________________________________________
+Command:
+./soda soda.config 44
+
+Output:
+Parent  Gropoff WATOff  Names   Truck   Plant   Stud0   Stud1   Mach0   Mach1   Mach2   Cour0   Cour1   Cour2
+******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* ******* *******
+...
+D0,2                            P3                              A
+                                d2,3
+                                U2,8
+                                D2,0            A1,2                            r
+D0,1                            X       P       F                               R
+D1,3
+D0,2                            F       F
+...
+***********************
+
+Explanation:
+1. Correct Output for Flat Tire
